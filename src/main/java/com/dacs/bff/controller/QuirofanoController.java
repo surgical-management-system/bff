@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dacs.bff.dto.QuirofanoDto;
+import com.dacs.bff.dto.QuirofanoDTO;
 import com.dacs.bff.service.ApiBackendQuirofanoService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ public class QuirofanoController {
     @Autowired
     private ApiBackendQuirofanoService quirofanoService;
     @GetMapping("")
-    public ResponseEntity<com.dacs.bff.dto.ApiResponse<List<QuirofanoDto>>> getAll() {
+    public ResponseEntity<com.dacs.bff.dto.ApiResponse<List<QuirofanoDTO>>> getAll() {
         try {
-            ResponseEntity<List<QuirofanoDto>> response = quirofanoService.getQuirofanos();
+            ResponseEntity<List<QuirofanoDTO>> response = quirofanoService.getQuirofanos();
             return com.dacs.bff.util.ApiResponseBuilder.ok(response.getBody());
         } catch (Exception e) {
             return com.dacs.bff.util.ApiResponseBuilder.serverError("Error al obtener quirofanos: " + e.getMessage());
@@ -34,9 +34,9 @@ public class QuirofanoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<com.dacs.bff.dto.ApiResponse<QuirofanoDto>> create (@RequestBody QuirofanoDto quirofanoDto) {
+    public ResponseEntity<com.dacs.bff.dto.ApiResponse<QuirofanoDTO>> create (@RequestBody QuirofanoDTO quirofanoDto) {
         try {
-            ResponseEntity<QuirofanoDto> response = quirofanoService.saveQuirofano(quirofanoDto);
+            ResponseEntity<QuirofanoDTO> response = quirofanoService.saveQuirofano(quirofanoDto);
             return com.dacs.bff.util.ApiResponseBuilder.created(response.getBody(), "Quirofano creado exitosamente");
         } catch (Exception e) {
             return com.dacs.bff.util.ApiResponseBuilder.serverError("Error al crear quirofano: " + e.getMessage());

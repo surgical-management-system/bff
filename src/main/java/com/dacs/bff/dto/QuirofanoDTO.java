@@ -1,6 +1,6 @@
 package com.dacs.bff.dto;
 
-public class QuirofanoDto {
+public class QuirofanoDTO {
     private Long id;
     private String nombre;
     private String estado;

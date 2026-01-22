@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dacs.bff.config.FeignConfig;
 import com.dacs.bff.dto.CirugiaDTO;
-import com.dacs.bff.dto.CirugiaDTO.BackResponse;
 import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginatedResponse;
 import com.dacs.bff.dto.ServicioDto;
@@ -29,8 +28,10 @@ public interface ApiBackendCirugiasClient {
         String ping();
 
         @GetMapping("/cirugia")
-        PaginatedResponse<CirugiaDTO.BackResponse> cirugias(@RequestParam(name = "page", required = false) Integer page,
-                        @RequestParam(name = "size", required = false) Integer size);
+        PaginatedResponse<CirugiaDTO.BackResponse> getCirugias(@RequestParam(name = "page", required = false) Integer page,
+                        @RequestParam(name = "size", required = false) Integer size,
+                        @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
+                        @RequestParam(name = "fechaFin", required = false) String fechaFin);
 
         @PostMapping("/cirugia")
         ResponseEntity<CirugiaDTO.BackResponse> create(@RequestBody CirugiaDTO.FrontRequest cirugia);
@@ -49,14 +50,6 @@ public interface ApiBackendCirugiasClient {
         ResponseEntity<List<MiembroEquipoDTO.BackResponse>> saveEquipoMedico(@PathVariable("id") Long id,
                         @RequestBody List<MiembroEquipoDTO.Create> miembros);
 
-        @GetMapping("/cirugia/horarios-disponibles")
-        ResponseEntity<List<LocalDateTime>> getTurnosDisponibles(
-                        @RequestParam(name = "cantidadProximosDias") int cantidadProximosDias,
-                        @RequestParam(name = "servicioId") Long servicioId);
-
         @GetMapping("/cirugia/servicios")
         ResponseEntity<List<ServicioDto>> getServicios();
-
-        @GetMapping("/cirugia/entre-fechas")
-        ResponseEntity<List<CirugiaDTO.BackResponse>> getBetweenDates(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin);
 }

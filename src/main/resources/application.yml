@@ -24,6 +24,8 @@ feign:
         url: '${MS_BACKEND_URL:http://localhost:9003/backend}'
       apiBackendPersonalClient:
         url: '${MS_BACKEND_URL:http://localhost:9003/backend}'
+      apiBackendTurnosClient:
+        url: '${MS_BACKEND_URL:http://localhost:9003/backend}'
 
 management:
   endpoints:

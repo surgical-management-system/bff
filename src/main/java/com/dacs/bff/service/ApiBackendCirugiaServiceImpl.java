@@ -29,21 +29,12 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public PaginatedResponse<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size) {
-		PaginatedResponse<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.cirugias(page, size);
+	public PaginatedResponse<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin) {
+		PaginatedResponse<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(page, size, fechaInicio, fechaFin);
 		List<CirugiaDTO.FrontResponse> frontList = backResp.getContent().stream()
 				.map(item -> cirugiaMapper.toFrontResponse(item))
 				.toList();
 		return com.dacs.bff.util.PaginatedResponseUtil.build(backResp, frontList);
-	}
-
-	@Override
-	public ResponseEntity<List<CirugiaDTO.FrontResponse>> getBetweenDates(String fechaInicial, String fechaFinal) {
-		ResponseEntity<List<CirugiaDTO.BackResponse>> backResp = apiBackendCirugiaClient.getBetweenDates(fechaInicial,
-				fechaFinal);
-		return ResponseEntity.status(backResp.getStatusCode()).body(backResp.getBody().stream()
-				.map(item -> cirugiaMapper.toFrontResponse(item))
-				.toList());
 	}
 
 	@Override
@@ -87,10 +78,6 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 						.toList());
 	}
 
-	@Override
-	public ResponseEntity<List<LocalDateTime>> getTurnosDisponibles(int cantidadProximosDias, Long servicioId) {
-		return apiBackendCirugiaClient.getTurnosDisponibles(cantidadProximosDias, servicioId);
-	}
 
 	@Override
 	public ResponseEntity<List<ServicioDto>> getServicios() {

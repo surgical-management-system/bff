@@ -42,24 +42,14 @@ public class CirugiaController {
     @GetMapping("")                                         //Agregar para manejar filtrado por otros campos
     public ResponseEntity<ApiResponse<PaginatedResponse<CirugiaDTO.FrontResponse>>> getAll(
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size) {
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
+            @RequestParam(name = "fechaFin", required = false) String fechaFin) {
         try {
-            PaginatedResponse<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(page, size);
+            PaginatedResponse<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(page, size, fechaInicio, fechaFin);
             return ApiResponseBuilder.okWithPagination(resp);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener cirugías: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/por-fechas")
-    public ResponseEntity<ApiResponse<List<CirugiaDTO.FrontResponse>>> getBetweenDates(@RequestParam String fechaInicio,
-            @RequestParam String fechaFin) {
-        try {
-    
-            ResponseEntity<List<CirugiaDTO.FrontResponse>> response = cirugiaService.getBetweenDates(fechaInicio, fechaFin);
-            return ApiResponseBuilder.ok(response.getBody());
-        } catch (Exception e) {
-            return ApiResponseBuilder.serverError("Error al obtener la cirugía: " + e.getMessage());
         }
     }
 
@@ -113,18 +103,6 @@ public class CirugiaController {
             return ApiResponseBuilder.ok(response.getBody(), "Equipo medico guardado exitosamente");
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al guardar equipo médico: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/horarios-disponibles")
-    public ResponseEntity<ApiResponse<List<LocalDateTime>>> getHorariosDisponibles(
-            @RequestParam int cantidadProximosDias, @RequestParam Long servicioId) {
-        try {
-            ResponseEntity<List<LocalDateTime>> horarios = cirugiaService.getTurnosDisponibles(cantidadProximosDias,
-                    servicioId);
-            return ApiResponseBuilder.ok(horarios.getBody());
-        } catch (Exception e) {
-            return ApiResponseBuilder.serverError("Error al obtener horarios disponibles: " + e.getMessage());
         }
     }
 

@@ -17,7 +17,7 @@ public class CirugiaDTO {
         private String anestesia;
         private String tipo;
         private PacienteDto.BackResponse paciente;    
-        private QuirofanoDto quirofano;
+        private QuirofanoDTO quirofano;
         private ServicioDto servicio;
     }
 

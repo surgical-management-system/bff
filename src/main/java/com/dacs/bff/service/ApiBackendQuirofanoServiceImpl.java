@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dacs.bff.api.client.ApiBackendQuirofanoClient;
-import com.dacs.bff.dto.QuirofanoDto;
+import com.dacs.bff.dto.QuirofanoDTO;
 
 
 @Service
@@ -16,22 +16,22 @@ public class ApiBackendQuirofanoServiceImpl implements ApiBackendQuirofanoServic
     private ApiBackendQuirofanoClient apiBackendQuirofanoClient;
 
     @Override
-    public ResponseEntity<QuirofanoDto> saveQuirofano(QuirofanoDto quirofano) throws Exception {
+    public ResponseEntity<QuirofanoDTO> saveQuirofano(QuirofanoDTO quirofano) throws Exception {
         return apiBackendQuirofanoClient.save(quirofano);
     }
 
     @Override
-    public ResponseEntity<QuirofanoDto> updateQuirofano(QuirofanoDto quirofano) throws Exception {
+    public ResponseEntity<QuirofanoDTO> updateQuirofano(QuirofanoDTO quirofano) throws Exception {
         return apiBackendQuirofanoClient.update(quirofano);
     }
     
     @Override
-    public ResponseEntity<QuirofanoDto> deleteQuirofano(Long id) throws Exception {
+    public ResponseEntity<QuirofanoDTO> deleteQuirofano(Long id) throws Exception {
         return apiBackendQuirofanoClient.delete(id);
     }
 
     @Override
-    public ResponseEntity<List<QuirofanoDto>> getQuirofanos() {
+    public ResponseEntity<List<QuirofanoDTO>> getQuirofanos() {
         return apiBackendQuirofanoClient.quirofanos();
     }
 
