@@ -12,7 +12,7 @@ public class CirugiaDTO {
     public static class BackResponse {
         private Long id;
         private String prioridad;
-        private LocalDateTime fecha_hora_inicio;
+        private LocalDateTime fechaHoraInicio;
         private String estado;
         private String anestesia;
         private String tipo;
@@ -32,6 +32,7 @@ public class CirugiaDTO {
         private String prioridad;
         private String fechaInicio;
         private String horaInicio;
+        private String horaFin;
         private String estado;
         private String anestesia;
         private String tipo;
@@ -44,7 +45,7 @@ public class CirugiaDTO {
         private Long pacienteId;  
         private Long servicioId;
         private String prioridad;
-        private LocalDateTime fecha_hora_inicio;
+        private LocalDateTime fechaHoraInicio;
         private String estado;
         private String anestesia;
         private String tipo;
