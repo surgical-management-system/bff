@@ -125,6 +125,9 @@ public CorsConfigurationSource corsConfigurationSource() {
 	// El resto del filtro sigue igual
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		
+		// --- CONFIGURACIÓN ORIGINAL COMENTADA TEMPORALMENTE ---
+		/*
 		http
 			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.csrf(csrf -> csrf.disable())
@@ -137,16 +140,13 @@ public CorsConfigurationSource corsConfigurationSource() {
 				.requestMatchers("/ping", "/version").permitAll()
 				.requestMatchers("/conectorping", "/backendping").permitAll()
 				.requestMatchers("/cirugia/**").permitAll()  //borrar despues
-				.requestMatchers("/paciente/**").permitAll()  //borrar despues
+				.requestMatchers("/pacientes/**").permitAll()  //borrar despues
 				.requestMatchers("/personal/**").permitAll()  //borrar despues
 				.requestMatchers("/quirofano/**").permitAll()  //borrar despues
-				
-				
 				// Endpoints que requieren autenticación
 				.requestMatchers("/secure/**").authenticated()
 				.requestMatchers("/alumno/**").authenticated() 
 				.requestMatchers("/items/**").authenticated()   
-				
 				// Cualquier otra petición requiere autenticación
 				.anyRequest().authenticated()
 			)
@@ -161,7 +161,17 @@ public CorsConfigurationSource corsConfigurationSource() {
 					response.getWriter().write("{\"error\":\"Unauthorized\",\"message\":\"Token JWT requerido o inválido\"}");
 				})
 			);
+		return http.build();
+		*/
 
+		// --- CONFIGURACIÓN TEMPORAL: PERMITIR TODO ---
+		http
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+			.csrf(csrf -> csrf.disable())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(authz -> authz
+				.anyRequest().permitAll()
+			);
 		return http.build();
 	}
 }

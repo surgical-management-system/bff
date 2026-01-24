@@ -12,7 +12,7 @@ import com.dacs.bff.api.client.ApiBackendCirugiasClient;
 
 import com.dacs.bff.dto.CirugiaDTO;
 import com.dacs.bff.dto.MiembroEquipoDTO;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ServicioDto;
 import com.dacs.bff.util.CirugiaMapper;
 
@@ -29,9 +29,9 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public PaginatedResponse<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin) {
-		PaginatedResponse<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(page, size, fechaInicio, fechaFin);
-		List<CirugiaDTO.FrontResponse> frontList = backResp.getContent().stream()
+	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin) {
+		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(page, size, fechaInicio, fechaFin);
+		List<CirugiaDTO.FrontResponse> frontList = backResp.getContenido().stream()
 				.map(item -> cirugiaMapper.toFrontResponse(item))
 				.toList();
 		return com.dacs.bff.util.PaginatedResponseUtil.build(backResp, frontList);

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dacs.bff.dto.ApiResponse;
 import com.dacs.bff.dto.PacienteDto;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.service.ApiBackendPacienteService;
 import com.dacs.bff.util.ApiResponseBuilder;
 
@@ -34,12 +34,12 @@ public class PacienteController {
     private ApiBackendPacienteService pacienteService;
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse<PaginatedResponse<PacienteDto.FrontResponse>>> getPacientes(
+    public ResponseEntity<ApiResponse<PaginacionDto.Response<PacienteDto.FrontResponse>>> getPacientes(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "16") int size,
             @RequestParam(name = "search", required = false) String search) {
         try {
-            PaginatedResponse<PacienteDto.FrontResponse> data = pacienteService.getPacientesByPage(page, size, search);
+            PaginacionDto.Response<PacienteDto.FrontResponse> data = pacienteService.getPacientesByPage(page, size, search);
             return ApiResponseBuilder.okWithPagination(data);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener pacientes: " + e.getMessage());
@@ -47,12 +47,12 @@ public class PacienteController {
     }
 
     @GetMapping("/lite")
-    public ResponseEntity<ApiResponse<PaginatedResponse<PacienteDto.FrontResponseLite>>> getPacientesLite(
+    public ResponseEntity<ApiResponse<PaginacionDto.Response<PacienteDto.FrontResponseLite>>> getPacientesLite(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "16") int size,
             @RequestParam(name = "search", required = false) String search) {
         try {
-            PaginatedResponse<PacienteDto.FrontResponseLite> data = pacienteService.getPacientesLite(page, size, search);
+            PaginacionDto.Response<PacienteDto.FrontResponseLite> data = pacienteService.getPacientesLite(page, size, search);
             return ApiResponseBuilder.okWithPagination(data);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener pacientes lite: " + e.getMessage());

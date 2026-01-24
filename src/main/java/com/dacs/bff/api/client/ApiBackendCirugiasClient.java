@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dacs.bff.config.FeignConfig;
 import com.dacs.bff.dto.CirugiaDTO;
 import com.dacs.bff.dto.MiembroEquipoDTO;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ServicioDto;
 
 @FeignClient(name = "apiBackendCirugiasClient", url = "${feign.client.config.apiBackendCirugiasClient.url}", configuration = FeignConfig.class)
@@ -28,7 +28,7 @@ public interface ApiBackendCirugiasClient {
         String ping();
 
         @GetMapping("/cirugia")
-        PaginatedResponse<CirugiaDTO.BackResponse> getCirugias(@RequestParam(name = "page", required = false) Integer page,
+        PaginacionDto.Response<CirugiaDTO.BackResponse> getCirugias(@RequestParam(name = "page", required = false) Integer page,
                         @RequestParam(name = "size", required = false) Integer size,
                         @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
                         @RequestParam(name = "fechaFin", required = false) String fechaFin);

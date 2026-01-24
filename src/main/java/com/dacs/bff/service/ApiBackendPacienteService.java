@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.dacs.bff.dto.PacienteDto;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PacienteDto.FrontResponse;
 
 public interface ApiBackendPacienteService {
@@ -20,7 +20,7 @@ public interface ApiBackendPacienteService {
 
     public ResponseEntity<List<PacienteDto.FrontResponse>> getPacientesHospital(Integer cantidad);
 
-    public PaginatedResponse<PacienteDto.FrontResponse> getPacientesByPage(int page, int size, String search);
+    public PaginacionDto.Response<PacienteDto.FrontResponse> getPacientesByPage(int page, int size, String search);
 
-    public PaginatedResponse<PacienteDto.FrontResponseLite> getPacientesLite(int page, int size, String search);
+    public PaginacionDto.Response<PacienteDto.FrontResponseLite> getPacientesLite(int page, int size, String search);
 }

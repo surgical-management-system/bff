@@ -11,7 +11,7 @@ import com.dacs.bff.api.client.ApiBackendPacientesClient;
 import com.dacs.bff.api.client.ApiConectorClient;
 import com.dacs.bff.dto.PacienteDto;
 import com.dacs.bff.dto.PacienteExternoDto;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.util.PacienteMapper;
 
 @Service
@@ -57,20 +57,22 @@ public class ApiBackendPacienteServiceImpl implements ApiBackendPacienteService 
     }
 
         @Override
-        public PaginatedResponse<PacienteDto.FrontResponse> getPacientesByPage(int page, int size, String search) {
-        PaginatedResponse<PacienteDto.BackResponse> backendResponse = apiBackendPacienteClient.getPacienteS(page, size, search);
-        List<PacienteDto.FrontResponse> mappedContent = backendResponse.getContent().stream()
+        public PaginacionDto.Response<PacienteDto.FrontResponse> getPacientesByPage(int page, int size, String search) {
+        PaginacionDto.Response<PacienteDto.BackResponse> backendResponse = apiBackendPacienteClient.getPacientes(page, size, search);
+        List<PacienteDto.BackResponse> content = backendResponse.getContenido() != null ? backendResponse.getContenido() : java.util.Collections.emptyList();
+        List<PacienteDto.FrontResponse> mappedContent = content.stream()
             .map(p -> modelMapper.map(p, PacienteDto.FrontResponse.class))
             .toList();
         return com.dacs.bff.util.PaginatedResponseUtil.build(backendResponse, mappedContent);
         }
 
     @Override
-    public PaginatedResponse<PacienteDto.FrontResponseLite> getPacientesLite(int page, int size, String search) {
-        PaginatedResponse<PacienteDto.FrontResponse> paginatedData = getPacientesByPage(page, size, search);
-        List<PacienteDto.FrontResponseLite> mappedContent = paginatedData.getContent().stream()
-                .map(p -> modelMapper.map(p, PacienteDto.FrontResponseLite.class))
-                .toList();
+    public PaginacionDto.Response<PacienteDto.FrontResponseLite> getPacientesLite(int page, int size, String search) {
+        PaginacionDto.Response<PacienteDto.FrontResponse> paginatedData = getPacientesByPage(page, size, search);
+        List<PacienteDto.FrontResponse> content = paginatedData.getContenido() != null ? paginatedData.getContenido() : java.util.Collections.emptyList();
+        List<PacienteDto.FrontResponseLite> mappedContent = content.stream()
+            .map(p -> modelMapper.map(p, PacienteDto.FrontResponseLite.class))
+            .toList();
         return com.dacs.bff.util.PaginatedResponseUtil.build(paginatedData, mappedContent);
     }
 }

@@ -1,16 +1,16 @@
 package com.dacs.bff.util;
 
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import java.util.List;
 
 public class PaginatedResponseUtil {
-    public static <T, B> PaginatedResponse<T> build(PaginatedResponse<B> backend, List<T> content) {
-        PaginatedResponse<T> response = new PaginatedResponse<>();
-        response.setContent(content);
-        response.setTotalElements(backend.getTotalElements());
-        response.setTotalPages(backend.getTotalPages());
-        response.setNumber(backend.getNumber());
-        response.setSize(backend.getSize());
+    public static <T, B> PaginacionDto.Response<T> build(PaginacionDto.Response<B> backend, List<T> content) {
+        PaginacionDto.Response<T> response = new PaginacionDto.Response<>();
+        response.setContenido(content);
+        response.setTotalElementos(backend.getTotalElementos());
+        response.setTotalPaginas(backend.getTotalPaginas());
+        response.setPagina(backend.getPagina());
+        response.setTamanio(backend.getTamanio());
         return response;
     }
 }

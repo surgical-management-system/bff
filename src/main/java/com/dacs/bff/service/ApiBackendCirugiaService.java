@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 
 import com.dacs.bff.dto.CirugiaDTO;
 import com.dacs.bff.dto.MiembroEquipoDTO;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ServicioDto;
 
 public interface ApiBackendCirugiaService {
 
-    public PaginatedResponse<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin);
+    public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin);
 
     public ResponseEntity<CirugiaDTO.FrontResponse> createCirugia(CirugiaDTO.FrontRequest cirugia) throws Exception;
 

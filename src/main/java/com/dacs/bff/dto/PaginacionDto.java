@@ -8,8 +8,8 @@ import lombok.Setter;
 
 @Data
 public class PaginacionDto<T> {
-    private int page;
-    private int size;
+    private int pagina;
+    private int tamanio;
 
 
     @Setter
@@ -24,9 +24,9 @@ public class PaginacionDto<T> {
     @Setter
     public static class Response<T> extends PaginacionDto<T> 
     {
-        private long totalElements;
-        private int totalPages;
-        private List<T> content;
+        private long totalElementos;
+        private int totalPaginas;
+        private List<T> contenido;
     }
 }
 

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PersonalDto;
 
 public interface ApiBackendPersonalService {     //Cambiar todos a frontresponse
-    PaginatedResponse<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param) throws Exception;
+    PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param) throws Exception;
 
     ResponseEntity<PersonalDto.BackResponse> create(PersonalDto.Create personalRequestDto);
 
@@ -16,5 +16,5 @@ public interface ApiBackendPersonalService {     //Cambiar todos a frontresponse
 
     ResponseEntity<Void> delete(Long id) throws Exception;
 
-    PaginatedResponse<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param);
+    PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param);
 }

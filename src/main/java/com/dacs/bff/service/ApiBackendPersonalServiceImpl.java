@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dacs.bff.api.client.ApiBackendPersonalClient;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PersonalDto;
 
 @Service
@@ -17,7 +17,7 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
     private ApiBackendPersonalClient apiBackendPersonalClient;
 
     @Override
-    public PaginatedResponse<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param) throws Exception {
+    public PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param) throws Exception {
         return apiBackendPersonalClient.getPersonal(page, size, param);
     }
 
@@ -38,9 +38,9 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
     }
 
     @Override
-    public PaginatedResponse<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param) {
-        PaginatedResponse<PersonalDto.BackResponse> backResp = apiBackendPersonalClient.getPersonal(page, size, param);
-        List<PersonalDto.FrontResponseLite> mappedContent = backResp.getContent().stream()
+    public PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param) {
+        PaginacionDto.Response<PersonalDto.BackResponse> backResp = apiBackendPersonalClient.getPersonal(page, size, param);
+        List<PersonalDto.FrontResponseLite> mappedContent = backResp.getContenido().stream()
                 .map(back -> {
                     PersonalDto.FrontResponseLite front = new PersonalDto.FrontResponseLite();
                     front.setId(back.getId());

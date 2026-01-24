@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dacs.bff.dto.MiembroEquipoDTO;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ApiResponse;
 import com.dacs.bff.dto.CirugiaDTO;
-import com.dacs.bff.dto.PaginatedResponse;
 
 import com.dacs.bff.dto.ServicioDto;
 // import com.dacs.bff.dto.CirugiaPageResponse;
@@ -39,14 +39,14 @@ public class CirugiaController {
     @Autowired
     private ApiBackendCirugiaService cirugiaService;
 
-    @GetMapping("")                                         //Agregar para manejar filtrado por otros campos
-    public ResponseEntity<ApiResponse<PaginatedResponse<CirugiaDTO.FrontResponse>>> getAll(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size,
-            @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
-            @RequestParam(name = "fechaFin", required = false) String fechaFin) {
+    @GetMapping("") // Agregar para manejar filtrado por otros campos
+    public ResponseEntity<ApiResponse<PaginacionDto.Response<CirugiaDTO.FrontResponse>>> getAll(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "fechaInicio", required = false) String fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) String fechaFin) {
         try {
-            PaginatedResponse<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(page, size, fechaInicio, fechaFin);
+            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(page, size, fechaInicio, fechaFin);
             return ApiResponseBuilder.okWithPagination(resp);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener cirugías: " + e.getMessage());

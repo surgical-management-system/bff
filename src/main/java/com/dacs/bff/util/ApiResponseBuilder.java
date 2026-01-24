@@ -1,7 +1,7 @@
 package com.dacs.bff.util;
 
 import com.dacs.bff.dto.ApiResponse;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.time.OffsetDateTime;
@@ -44,9 +44,9 @@ public class ApiResponseBuilder {
         return buildResponse(null, HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
-    public static <T> ResponseEntity<ApiResponse<PaginatedResponse<T>>> okWithPagination(
-            PaginatedResponse<T> pageResp) {
-        ApiResponse<PaginatedResponse<T>> resp = new ApiResponse<>();
+    public static <T> ResponseEntity<ApiResponse<PaginacionDto.Response<T>>> okWithPagination(
+            PaginacionDto.Response<T> pageResp) {
+        ApiResponse<PaginacionDto.Response<T>> resp = new ApiResponse<>();
         resp.setSuccess(true);
         resp.setData(pageResp); // aquí va todo el objeto paginado
         resp.setMessage(null);

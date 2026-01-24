@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dacs.bff.config.FeignConfig;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PersonalDto;
 
 @FeignClient(name = "apiBackendPersonalClient", url = "${feign.client.config.apiBackendPersonalClient.url}", configuration = FeignConfig.class)
@@ -34,7 +34,7 @@ public interface ApiBackendPersonalClient {
     ResponseEntity<Void> delete(@PathVariable("id") Long id);
 
     @GetMapping("/personal")
-    PaginatedResponse<PersonalDto.BackResponse> getPersonal(
+    PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size,
             @RequestParam(name = "param", required = false) String param);

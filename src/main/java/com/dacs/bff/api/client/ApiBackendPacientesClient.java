@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.dacs.bff.config.FeignConfig;
 import com.dacs.bff.dto.PacienteDto;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 
 @FeignClient(name = "apiBackendPacientesClient", url = "${feign.client.config.apiBackendPacientesClient.url}", configuration = FeignConfig.class)
 
 public interface ApiBackendPacientesClient {
 
-    @GetMapping("/pacient")          
+    @GetMapping("/pacientes")          
     List<PacienteDto.BackResponse> pacientes(@RequestParam(name = "search", required = false) List<Long> pacienteIds);
 
-    @PostMapping("/pacient")
+    @PostMapping("/pacientes")
     PacienteDto.BackResponse save(@RequestBody PacienteDto.BackResponse paciente);
 
-    @PutMapping("/pacient")
+    @PutMapping("/pacientes")
     PacienteDto.BackResponse update(@RequestBody PacienteDto.BackResponse paciente);
 
-    @DeleteMapping("/pacient/{id}")
+    @DeleteMapping("/pacientes/{id}")
     ResponseEntity<Void> delete(@PathVariable("id") Long id);
 
-    @GetMapping("/pacient")
-    PaginatedResponse<PacienteDto.BackResponse> getPacienteS(
+    @GetMapping("/pacientes")
+    PaginacionDto.Response<PacienteDto.BackResponse> getPacientes(
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
             @RequestParam(value = "search", required = false) String search

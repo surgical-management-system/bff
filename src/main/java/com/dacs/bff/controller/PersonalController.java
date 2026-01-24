@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dacs.bff.dto.ApiResponse;
-import com.dacs.bff.dto.PaginatedResponse;
+import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PersonalDto;
 import com.dacs.bff.service.ApiBackendPersonalService;
 import com.dacs.bff.util.ApiResponseBuilder;
@@ -33,12 +33,12 @@ public class PersonalController {
     private ApiBackendPersonalService personalService;
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse<PaginatedResponse<PersonalDto.BackResponse>>> getPersonal(
+    public ResponseEntity<ApiResponse<PaginacionDto.Response<PersonalDto.BackResponse>>> getPersonal(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size,
             @RequestParam(name = "param", required = false) String param) throws Exception {
         try {
-            PaginatedResponse<PersonalDto.BackResponse> backend = personalService.getPersonal(page, size, param);
+            PaginacionDto.Response<PersonalDto.BackResponse> backend = personalService.getPersonal(page, size, param);
             return ApiResponseBuilder.okWithPagination(backend);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener personal: " + e.getMessage());
@@ -82,12 +82,12 @@ public class PersonalController {
     }
 
     @GetMapping("/resumen")
-    public ResponseEntity<ApiResponse<PaginatedResponse<PersonalDto.FrontResponseLite>>> getPersonalLite(
+    public ResponseEntity<ApiResponse<PaginacionDto.Response<PersonalDto.FrontResponseLite>>> getPersonalLite(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
             @RequestParam(name = "param", required = false) String param) {
         try {
-            PaginatedResponse<PersonalDto.FrontResponseLite> results = personalService.getPersonalLite(page, size, param);
+            PaginacionDto.Response<PersonalDto.FrontResponseLite> results = personalService.getPersonalLite(page, size, param);
             return ApiResponseBuilder.okWithPagination(results);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener personal lite: " + e.getMessage());
