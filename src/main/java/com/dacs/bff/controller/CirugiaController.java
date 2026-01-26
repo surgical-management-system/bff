@@ -33,7 +33,7 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/cirugia")
+@RequestMapping("/cirugias")
 public class CirugiaController {
 
     @Autowired
@@ -41,12 +41,12 @@ public class CirugiaController {
 
     @GetMapping("") // Agregar para manejar filtrado por otros campos
     public ResponseEntity<ApiResponse<PaginacionDto.Response<CirugiaDTO.FrontResponse>>> getAll(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "pagina", defaultValue = "0") int pagina,
+            @RequestParam(value = "tamano", defaultValue = "20") int tamano,
             @RequestParam(value = "fechaInicio", required = false) String fechaInicio,
             @RequestParam(value = "fechaFin", required = false) String fechaFin) {
         try {
-            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(page, size, fechaInicio, fechaFin);
+            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(pagina, tamano, fechaInicio, fechaFin);  
             return ApiResponseBuilder.okWithPagination(resp);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener cirugías: " + e.getMessage());
@@ -107,9 +107,10 @@ public class CirugiaController {
     }
 
     @GetMapping("/servicios")
-    public ResponseEntity<ApiResponse<List<ServicioDto>>> getServicios() {
+    public ResponseEntity<ApiResponse<List<ServicioDto>>> getServicios(@RequestParam(defaultValue = "10") int tamano,
+            @RequestParam(defaultValue = "0") int pagina) {
         try {
-            ResponseEntity<List<ServicioDto>> servicios = cirugiaService.getServicios();
+            ResponseEntity<List<ServicioDto>> servicios = cirugiaService.getServicios(tamano, pagina);
             return ApiResponseBuilder.ok(servicios.getBody());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener servicios: " + e.getMessage());

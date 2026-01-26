@@ -15,6 +15,8 @@ import com.dacs.bff.service.ApiBackendTurnoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Slf4j
 @RestController
@@ -25,8 +27,19 @@ public class TurnoController {
     private ApiBackendTurnoService turnosService;
 
     @GetMapping("")
-    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(@RequestParam PaginacionDto.Turnos paginacion) {
-    return turnosService.getTurnosDisponibles(paginacion);
+    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(
+            @RequestParam(required = false, defaultValue = "0") Integer pagina,
+            @RequestParam(required = false, defaultValue = "10") Integer tamano,
+            @RequestParam(required = true) String fechaInicio,
+            @RequestParam(required = true) String fechaFin,
+            @RequestParam(required = false, defaultValue = "0") Integer quirofanoId,
+            @RequestParam(required = false, defaultValue = "") String estado) {
+        return turnosService.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado);
+    }
+
+    @PostMapping("generar-turnos")
+    public ResponseEntity<Void> generarTurnos(@RequestBody String entity) {
+        return turnosService.generarTurnos(entity);
     }
 
 }

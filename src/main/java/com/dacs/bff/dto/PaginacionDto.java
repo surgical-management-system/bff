@@ -9,7 +9,7 @@ import lombok.Setter;
 @Data
 public class PaginacionDto<T> {
     private int pagina;
-    private int tamanio;
+    private int tamaño;
 
 
     @Setter

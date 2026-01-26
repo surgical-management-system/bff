@@ -10,7 +10,7 @@ public class PaginatedResponseUtil {
         response.setTotalElementos(backend.getTotalElementos());
         response.setTotalPaginas(backend.getTotalPaginas());
         response.setPagina(backend.getPagina());
-        response.setTamanio(backend.getTamanio());
+        response.setTamaño(backend.getTamaño());
         return response;
     }
 }

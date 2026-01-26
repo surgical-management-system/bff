@@ -29,8 +29,8 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin) {
-		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(page, size, fechaInicio, fechaFin);
+	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin) {
+		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(pagina, tamaño, fechaInicio, fechaFin);
 		List<CirugiaDTO.FrontResponse> frontList = backResp.getContenido().stream()
 				.map(item -> cirugiaMapper.toFrontResponse(item))
 				.toList();
@@ -39,6 +39,7 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 
 	@Override
 	public ResponseEntity<CirugiaDTO.FrontResponse> createCirugia(CirugiaDTO.FrontRequest cirugia) throws Exception {
+		
 		ResponseEntity<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.create(cirugia);
 
 		return ResponseEntity.status(backResp.getStatusCode()).body(cirugiaMapper.toFrontResponse(backResp.getBody()));
@@ -80,8 +81,8 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 
 
 	@Override
-	public ResponseEntity<List<ServicioDto>> getServicios() {
+	public ResponseEntity<List<ServicioDto>> getServicios(int tamaño, int pagina) {
 
-		return apiBackendCirugiaClient.getServicios();
+		return apiBackendCirugiaClient.getServicios(tamaño, pagina);
 	}
 }

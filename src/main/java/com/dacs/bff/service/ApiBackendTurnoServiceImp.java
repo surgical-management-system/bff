@@ -17,8 +17,12 @@ public class ApiBackendTurnoServiceImp implements ApiBackendTurnoService {
     private ApiBackendTurnosClient apiBackendTurnosClient;
 
     @Override
-    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(PaginacionDto.Turnos paginacion) {
-        return apiBackendTurnosClient.getTurnosDisponibles(paginacion);
+    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(Integer pagina, Integer tamano, String fechaInicio, String fechaFin, Integer quirofanoId, String estado) {
+        return apiBackendTurnosClient.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado);
     }
 
+    @Override
+    public ResponseEntity<Void> generarTurnos(String entity) {
+        return apiBackendTurnosClient.generarTurnos(entity);
+    }
 }

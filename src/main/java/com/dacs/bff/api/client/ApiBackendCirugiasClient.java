@@ -28,8 +28,8 @@ public interface ApiBackendCirugiasClient {
         String ping();
 
         @GetMapping("/cirugia")
-        PaginacionDto.Response<CirugiaDTO.BackResponse> getCirugias(@RequestParam(name = "page", required = false) Integer page,
-                        @RequestParam(name = "size", required = false) Integer size,
+        PaginacionDto.Response<CirugiaDTO.BackResponse> getCirugias(@RequestParam(name = "pagina", required = false) Integer pagina,
+                        @RequestParam(name = "tamano", required = false) Integer tamano,
                         @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
                         @RequestParam(name = "fechaFin", required = false) String fechaFin);
 
@@ -51,5 +51,6 @@ public interface ApiBackendCirugiasClient {
                         @RequestBody List<MiembroEquipoDTO.Create> miembros);
 
         @GetMapping("/cirugia/servicios")
-        ResponseEntity<List<ServicioDto>> getServicios();
+        ResponseEntity<List<ServicioDto>> getServicios(@RequestParam(name = "tamano", required = false) int tamano,
+                        @RequestParam(name = "pagina", required = false) int pagina);   
 }

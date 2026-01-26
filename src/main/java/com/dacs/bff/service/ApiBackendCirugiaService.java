@@ -13,7 +13,7 @@ import com.dacs.bff.dto.ServicioDto;
 
 public interface ApiBackendCirugiaService {
 
-    public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer page, Integer size, String fechaInicio, String fechaFin);
+    public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin);
 
     public ResponseEntity<CirugiaDTO.FrontResponse> createCirugia(CirugiaDTO.FrontRequest cirugia) throws Exception;
 
@@ -23,7 +23,7 @@ public interface ApiBackendCirugiaService {
 
     public ResponseEntity<List<MiembroEquipoDTO.Response>> saveEquipoMedico(List<MiembroEquipoDTO.Create> miembros, Long id);
 
-    public ResponseEntity<List<ServicioDto>> getServicios();
+    public ResponseEntity<List<ServicioDto>> getServicios(int tamaño, int pagina);
 
     public ResponseEntity<CirugiaDTO.FrontResponse> updateCirugia(String id, CirugiaDTO.FrontRequest cirugia)
             throws Exception;
