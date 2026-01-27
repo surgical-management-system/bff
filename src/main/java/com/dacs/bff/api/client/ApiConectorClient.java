@@ -20,5 +20,5 @@ public interface ApiConectorClient {
 	String ping();
 
 	@GetMapping("/api/external/paciente")
-	PacienteExternoDto getPacientesHospital(@RequestParam("cantidad") int cantidad);
+	PacienteExternoDto getPacientesHospital(@RequestParam("cantidad") int cantidad, @RequestParam("nacionalidad") String nacionalidad);
 }

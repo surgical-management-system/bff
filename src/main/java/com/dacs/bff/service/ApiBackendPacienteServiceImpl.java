@@ -47,7 +47,7 @@ public class ApiBackendPacienteServiceImpl implements ApiBackendPacienteService 
 
     @Override
     public ResponseEntity<List<PacienteDto.FrontResponse>> getPacientesHospital(Integer cantidad) {
-        PacienteExternoDto response = apiConectorClient.getPacientesHospital(cantidad);
+        PacienteExternoDto response = apiConectorClient.getPacientesHospital(cantidad, "argentina");
         List<PacienteDto.FrontResponse> lista = response.getResults()
                 .stream()
                 .map(PacienteMapper::fromApiHospitalResponse)
