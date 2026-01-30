@@ -27,7 +27,7 @@ public class KeycloakUserDto {
     private boolean emailVerified;
     private Long createdTimestamp;
     private Map<String, List<String>> attributes;
-    
+
     // Campo para los roles
     private List<String> roles;
 
@@ -38,6 +38,15 @@ public class KeycloakUserDto {
     public static class Create extends KeycloakUserDto {
         private List<CredentialRepresentation> credentials;
         // NO declarar roles aquí - usa el heredado del padre
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Update extends KeycloakUserDto {
+        private List<CredentialRepresentation> credentials;
+
     }
 
     @Data

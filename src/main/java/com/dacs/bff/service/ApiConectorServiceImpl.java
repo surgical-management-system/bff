@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.dacs.bff.api.client.ApiConectorClient;
 import com.dacs.bff.dto.KeycloakUserDto;
+import com.dacs.bff.dto.KeycloakUserDto.Update;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ApiResponse;
 
@@ -34,4 +35,10 @@ public class ApiConectorServiceImpl implements ApiConectorService {
      
         return apiConectorClient.createUser(user); // Reemplazar con la lógica real
     }
+
+    @Override
+    public ApiResponse<KeycloakUserDto> updateUsuario(String id, Update user) {
+        return apiConectorClient.updateUser(id, user);
+    }
+
 }

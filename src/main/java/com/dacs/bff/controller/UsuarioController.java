@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -34,21 +37,20 @@ public class UsuarioController {
     @PutMapping("/{id}/status")
     public ResponseEntity<ApiResponse<KeycloakUserDto>> toggleUsuarioStatus(
             @PathVariable String id,
-            @RequestBody ToggleStatusRequest request) {
-        return ResponseEntity.ok(keycloakUserService.toggleUsuarioStatus(id, request.isEnabled()));
-    }
-
-    // DTO interno para el request de status
-    public static class ToggleStatusRequest {
-        private boolean enabled;
-        public boolean isEnabled() { return enabled; }
-        public void setEnabled(boolean enabled) { this.enabled = enabled; }
+            @RequestParam boolean enabled) {
+        return ResponseEntity.ok(keycloakUserService.toggleUsuarioStatus(id, enabled));
     }
 
     @PostMapping("")
     public ResponseEntity<ApiResponse<KeycloakUserDto>> createUsuario(@RequestBody KeycloakUserDto.Create user) {
         
         return ResponseEntity.ok(keycloakUserService.createUsuario(user));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<KeycloakUserDto>> updateUsuario(@PathVariable String id, @RequestBody KeycloakUserDto.Update user) {
+        
+        return ResponseEntity.ok(keycloakUserService.updateUsuario(id, user))   ;
     }
     
 }
