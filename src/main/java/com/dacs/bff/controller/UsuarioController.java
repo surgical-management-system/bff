@@ -3,20 +3,23 @@ package com.dacs.bff.controller;
 import com.dacs.bff.dto.KeycloakUserDto;
 import com.dacs.bff.dto.ApiResponse;
 import com.dacs.bff.dto.PaginacionDto;
-import com.dacs.bff.service.KeycloakUserService;
+import com.dacs.bff.service.ApiConectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UsuarioController {
 
     @Autowired
-    private KeycloakUserService keycloakUserService;
+    private ApiConectorService keycloakUserService;
 
-    @GetMapping
-    public ResponseEntity<PaginacionDto<KeycloakUserDto>> getUsuarios(
+    @GetMapping("")
+    public ResponseEntity<PaginacionDto.Response<KeycloakUserDto>> getUsuarios(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "16") int size,
             @RequestParam(required = false) String search) {
@@ -41,4 +44,11 @@ public class UsuarioController {
         public boolean isEnabled() { return enabled; }
         public void setEnabled(boolean enabled) { this.enabled = enabled; }
     }
+
+    @PostMapping("")
+    public ResponseEntity<ApiResponse<KeycloakUserDto>> createUsuario(@RequestBody KeycloakUserDto.Create user) {
+        
+        return ResponseEntity.ok(keycloakUserService.createUsuario(user));
+    }
+    
 }

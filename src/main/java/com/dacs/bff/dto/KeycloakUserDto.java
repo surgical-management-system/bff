@@ -3,6 +3,20 @@ package com.dacs.bff.dto;
 import java.util.List;
 import java.util.Map;
 
+import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class KeycloakUserDto {
     private String id;
     private String username;
@@ -13,34 +27,25 @@ public class KeycloakUserDto {
     private boolean emailVerified;
     private Long createdTimestamp;
     private Map<String, List<String>> attributes;
+    
+    // Campo para los roles
+    private List<String> roles;
 
-    public KeycloakUserDto() {}
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Create extends KeycloakUserDto {
+        private List<CredentialRepresentation> credentials;
+        // NO declarar roles aquí - usa el heredado del padre
+    }
 
-    // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-
-    public boolean isEnabled() { return enabled; }
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
-
-    public boolean isEmailVerified() { return emailVerified; }
-    public void setEmailVerified(boolean emailVerified) { this.emailVerified = emailVerified; }
-
-    public Long getCreatedTimestamp() { return createdTimestamp; }
-    public void setCreatedTimestamp(Long createdTimestamp) { this.createdTimestamp = createdTimestamp; }
-
-    public Map<String, List<String>> getAttributes() { return attributes; }
-    public void setAttributes(Map<String, List<String>> attributes) { this.attributes = attributes; }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CredentialRepresentation {
+        private String type = "password";
+        private String value;
+        private Boolean temporary = false;
+    }
 }
