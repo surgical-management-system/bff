@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.dacs.bff.api.client.ApiBackendCirugiasClient;
 
 import com.dacs.bff.dto.CirugiaDTO;
+import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ServicioDto;
@@ -84,5 +85,25 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	public ResponseEntity<List<ServicioDto>> getServicios(int tamaño, int pagina) {
 
 		return apiBackendCirugiaClient.getServicios(tamaño, pagina);
+	}
+
+	@Override
+	public ResponseEntity<List<IntervencionDto>> getIntervencionesByCirugiaId(Long cirugiaId) {
+		return apiBackendCirugiaClient.getIntervencionesByCirugiaId(cirugiaId);
+	}
+
+	@Override
+	public ResponseEntity<IntervencionDto> createIntervencion(Long cirugiaId, IntervencionDto intervencion) {
+		return apiBackendCirugiaClient.createIntervencion(cirugiaId, intervencion);
+	}
+
+	@Override
+	public ResponseEntity<IntervencionDto> updateIntervencion(Long cirugiaId, Long intervencionId, IntervencionDto intervencion) {
+		return apiBackendCirugiaClient.updateIntervencion(cirugiaId, intervencionId, intervencion);
+	}
+
+	@Override
+	public ResponseEntity<Void> deleteIntervencion(Long cirugiaId, Long intervencionId) {
+		return apiBackendCirugiaClient.deleteIntervencion(cirugiaId, intervencionId);
 	}
 }

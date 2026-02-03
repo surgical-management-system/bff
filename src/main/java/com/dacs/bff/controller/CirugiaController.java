@@ -125,6 +125,47 @@ public class CirugiaController {
         
         return null;
     }
-    
-    
+
+    @GetMapping("/{cirugiaId}/intervenciones")
+    public ResponseEntity<ApiResponse<List<IntervencionDto>>> getIntervencionesByCirugiaId(@PathVariable Long cirugiaId) {
+        try {
+            ResponseEntity<List<IntervencionDto>> response = cirugiaService.getIntervencionesByCirugiaId(cirugiaId);
+            return ApiResponseBuilder.ok(response.getBody());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al obtener intervenciones: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{cirugiaId}/intervenciones")
+    public ResponseEntity<ApiResponse<IntervencionDto>> createIntervencion(@PathVariable Long cirugiaId,
+            @RequestBody IntervencionDto intervencion) {
+        try {
+            ResponseEntity<IntervencionDto> response = cirugiaService.createIntervencion(cirugiaId, intervencion);
+            return ApiResponseBuilder.created(response.getBody(), "Intervención creada exitosamente");
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al crear intervención: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{cirugiaId}/intervenciones/{intervencionId}")
+    public ResponseEntity<ApiResponse<IntervencionDto>> updateIntervencion(@PathVariable Long cirugiaId,
+            @PathVariable Long intervencionId, @RequestBody IntervencionDto intervencion) {
+        try {
+            ResponseEntity<IntervencionDto> response = cirugiaService.updateIntervencion(cirugiaId, intervencionId, intervencion);
+            return ApiResponseBuilder.ok(response.getBody(), "Intervención actualizada exitosamente");
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al actualizar intervención: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{cirugiaId}/intervenciones/{intervencionId}")
+    public ResponseEntity<ApiResponse<Void>> deleteIntervencion(@PathVariable Long cirugiaId,
+            @PathVariable Long intervencionId) {
+        try {
+            cirugiaService.deleteIntervencion(cirugiaId, intervencionId);
+            return ApiResponseBuilder.ok(null, "Intervención eliminada exitosamente");
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al eliminar intervención: " + e.getMessage());
+        }
+    }
 }

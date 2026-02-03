@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dacs.bff.config.FeignConfig;
 import com.dacs.bff.dto.CirugiaDTO;
+import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ServicioDto;
@@ -52,5 +53,21 @@ public interface ApiBackendCirugiasClient {
 
         @GetMapping("/cirugia/servicios")
         ResponseEntity<List<ServicioDto>> getServicios(@RequestParam(name = "tamano", required = false) int tamano,
-                        @RequestParam(name = "pagina", required = false) int pagina);   
+                        @RequestParam(name = "pagina", required = false) int pagina);
+
+        @GetMapping("/cirugia/{cirugiaId}/intervenciones")
+        ResponseEntity<List<IntervencionDto>> getIntervencionesByCirugiaId(@PathVariable("cirugiaId") Long cirugiaId);
+
+        @PostMapping("/cirugia/{cirugiaId}/intervenciones")
+        ResponseEntity<IntervencionDto> createIntervencion(@PathVariable("cirugiaId") Long cirugiaId,
+                        @RequestBody IntervencionDto intervencion);
+
+        @PutMapping("/cirugia/{cirugiaId}/intervenciones/{intervencionId}")
+        ResponseEntity<IntervencionDto> updateIntervencion(@PathVariable("cirugiaId") Long cirugiaId,
+                        @PathVariable("intervencionId") Long intervencionId,
+                        @RequestBody IntervencionDto intervencion);
+
+        @DeleteMapping("/cirugia/{cirugiaId}/intervenciones/{intervencionId}")
+        ResponseEntity<Void> deleteIntervencion(@PathVariable("cirugiaId") Long cirugiaId,
+                        @PathVariable("intervencionId") Long intervencionId);
 }
