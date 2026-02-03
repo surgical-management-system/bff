@@ -8,7 +8,7 @@ import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.ApiResponse;
 import com.dacs.bff.dto.CirugiaDTO;
-
+import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.ServicioDto;
 // import com.dacs.bff.dto.CirugiaPageResponse;
 import com.dacs.bff.service.ApiBackendCirugiaService;
@@ -116,4 +116,15 @@ public class CirugiaController {
             return ApiResponseBuilder.serverError("Error al obtener servicios: " + e.getMessage());
         }
     }
+
+    @PostMapping("{id}/finalizar")
+    public ResponseEntity<ApiResponse<CirugiaDTO.FrontResponse>> finalizarCirugia(@RequestBody IntervencionDto entity,
+            @PathVariable Long id
+    ) {
+        
+        
+        return null;
+    }
+    
+    
 }
