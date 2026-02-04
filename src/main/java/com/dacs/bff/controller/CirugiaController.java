@@ -42,11 +42,12 @@ public class CirugiaController {
     @GetMapping("") // Agregar para manejar filtrado por otros campos
     public ResponseEntity<ApiResponse<PaginacionDto.Response<CirugiaDTO.FrontResponse>>> getAll(
             @RequestParam(value = "pagina", defaultValue = "0") int pagina,
-            @RequestParam(value = "tamano", defaultValue = "20") int tamano,
+            @RequestParam(value = "tamano", defaultValue = "16") int tamano,
             @RequestParam(value = "fechaInicio", required = false) String fechaInicio,
-            @RequestParam(value = "fechaFin", required = false) String fechaFin) {
+            @RequestParam(value = "fechaFin", required = false) String fechaFin,
+            @RequestParam(value = "estado", required = false) String estado) {
         try {
-            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(pagina, tamano, fechaInicio, fechaFin);  
+            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(pagina, tamano, fechaInicio, fechaFin, estado);  
             return ApiResponseBuilder.okWithPagination(resp);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener cirugías: " + e.getMessage());
@@ -117,13 +118,19 @@ public class CirugiaController {
         }
     }
 
-    @PostMapping("{id}/finalizar")
-    public ResponseEntity<ApiResponse<CirugiaDTO.FrontResponse>> finalizarCirugia(@RequestBody IntervencionDto entity,
+    @PutMapping("{id}/finalizar")
+    public ResponseEntity<ApiResponse<CirugiaDTO.FrontResponse>> finalizarCirugia(
             @PathVariable Long id
     ) {
+        try {
+            ResponseEntity<CirugiaDTO.FrontResponse> response = cirugiaService.finalizarCirugia(id);
+            return ApiResponseBuilder.ok(response.getBody(), "Cirugía finalizada exitosamente");
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al finalizar cirugía: " + e.getMessage());
+        }
         
         
-        return null;
+       
     }
 
     @GetMapping("/{cirugiaId}/intervenciones")

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dacs.bff.config.FeignConfig;
 import com.dacs.bff.dto.CirugiaDTO;
+import com.dacs.bff.dto.CirugiaDTO.FrontResponse;
 import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
@@ -32,7 +33,8 @@ public interface ApiBackendCirugiasClient {
         PaginacionDto.Response<CirugiaDTO.BackResponse> getCirugias(@RequestParam(name = "pagina", required = false) Integer pagina,
                         @RequestParam(name = "tamano", required = false) Integer tamano,
                         @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
-                        @RequestParam(name = "fechaFin", required = false) String fechaFin);
+                        @RequestParam(name = "fechaFin", required = false) String fechaFin,
+                        @RequestParam(name = "estado", required = false) String estado);
 
         @PostMapping("/cirugia")
         ResponseEntity<CirugiaDTO.BackResponse> create(@RequestBody CirugiaDTO.FrontRequest cirugia);
@@ -70,4 +72,7 @@ public interface ApiBackendCirugiasClient {
         @DeleteMapping("/cirugia/{cirugiaId}/intervenciones/{intervencionId}")
         ResponseEntity<Void> deleteIntervencion(@PathVariable("cirugiaId") Long cirugiaId,
                         @PathVariable("intervencionId") Long intervencionId);
+
+        @PutMapping("/cirugia/{id}/finalizar")
+        ResponseEntity<CirugiaDTO.BackResponse> finalizarCirugia(@PathVariable("id") Long id);
 }

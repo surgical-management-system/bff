@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.dacs.bff.api.client.ApiBackendCirugiasClient;
 
 import com.dacs.bff.dto.CirugiaDTO;
+import com.dacs.bff.dto.CirugiaDTO.FrontResponse;
 import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
@@ -30,8 +31,8 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin) {
-		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(pagina, tamaño, fechaInicio, fechaFin);
+	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin, String estado) {
+		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(pagina, tamaño, fechaInicio, fechaFin, estado);
 		List<CirugiaDTO.FrontResponse> frontList = backResp.getContenido().stream()
 				.map(item -> cirugiaMapper.toFrontResponse(item))
 				.toList();
@@ -105,5 +106,11 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	@Override
 	public ResponseEntity<Void> deleteIntervencion(Long cirugiaId, Long intervencionId) {
 		return apiBackendCirugiaClient.deleteIntervencion(cirugiaId, intervencionId);
+	}
+
+	@Override
+	public ResponseEntity<FrontResponse> finalizarCirugia(Long id) {
+		ResponseEntity<CirugiaDTO.BackResponse> backResponse = apiBackendCirugiaClient.finalizarCirugia(id);	
+		return ResponseEntity.status(backResponse.getStatusCode()).body(cirugiaMapper.toFrontResponse(backResponse.getBody()));
 	}
 }
