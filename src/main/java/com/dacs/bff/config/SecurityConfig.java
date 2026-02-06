@@ -1,5 +1,16 @@
 package com.dacs.bff.config;
 
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import java.io.IOException;
+
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -27,75 +38,78 @@ public class SecurityConfig {
 	// Bean para configurar CORS globalmente. (No se modifica)
 	// @Bean
 	// public CorsConfigurationSource corsConfigurationSource() {
-	// 	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	// 	CorsConfiguration config = new CorsConfiguration();
-		
-	// 	config.setAllowCredentials(true);
-		
-	// 	config.setAllowedOriginPatterns(Arrays.asList(
-	// 		"http://localhost:9001",
-	// 		"http://localhost:4200",
-	// 		"http://localhost:3000",
-	// 		"https://dacs2025.local",
-	// 		"https://*.dacs2025.local"
-	// 	));
-		
-	// 	config.setAllowedHeaders(Arrays.asList(
-	// 		"Authorization",
-	// 		"Content-Type",
-	// 		"X-Requested-With",
-	// 		"Accept",
-	// 		"Origin",
-	// 		"Access-Control-Request-Method",
-	// 		"Access-Control-Request-Headers"
-	// 	));
-		
-	// 	config.setExposedHeaders(Arrays.asList(
-	// 		"Access-Control-Allow-Origin",
-	// 		"Access-Control-Allow-Credentials"
-	// 	));
-		
-	// 	config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-		
-	// 	config.setMaxAge(3600L);
-		
-	// 	source.registerCorsConfiguration("/**", config);
-	// 	return source;
+	// UrlBasedCorsConfigurationSource source = new
+	// UrlBasedCorsConfigurationSource();
+	// CorsConfiguration config = new CorsConfiguration();
+
+	// config.setAllowCredentials(true);
+
+	// config.setAllowedOriginPatterns(Arrays.asList(
+	// "http://localhost:9001",
+	// "http://localhost:4200",
+	// "http://localhost:3000",
+	// "https://dacs2025.local",
+	// "https://*.dacs2025.local"
+	// ));
+
+	// config.setAllowedHeaders(Arrays.asList(
+	// "Authorization",
+	// "Content-Type",
+	// "X-Requested-With",
+	// "Accept",
+	// "Origin",
+	// "Access-Control-Request-Method",
+	// "Access-Control-Request-Headers"
+	// ));
+
+	// config.setExposedHeaders(Arrays.asList(
+	// "Access-Control-Allow-Origin",
+	// "Access-Control-Allow-Credentials"
+	// ));
+
+	// config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE",
+	// "OPTIONS", "PATCH"));
+
+	// config.setMaxAge(3600L);
+
+	// source.registerCorsConfiguration("/**", config);
+	// return source;
 	// }
 
-	@Bean    //PERMITIR DESDE CUALQUIER ORIGEN   (Para usar desde Postman o frontends en otros orígenes)
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration config = new CorsConfiguration();
-    
-    config.setAllowedOrigins(Arrays.asList("*"));   // Permite cualquier origen
-    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-    config.setAllowedHeaders(Arrays.asList("*"));   // Permite todos los headers
-    config.setExposedHeaders(Arrays.asList("*"));
-    config.setAllowCredentials(false);              // 🚨 Obligatorio si usás "*"
+	// PERMITIR DESDE CUALQUIER ORIGEN (Para usar desde Postman o frontends en otros
+	// orígenes)
+	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOriginPatterns(Arrays.asList("*")); // Use allowedOriginPatterns for wildcards
+		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+		config.setAllowedHeaders(Arrays.asList("*"));
+		config.setExposedHeaders(Arrays.asList("*"));
+		config.setAllowCredentials(false); // Must be false with "*"
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
+	}
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", config);
-
-    return source;
-}
-
-
-	//  MÉTODO CORREGIDO para extraer los roles de Keycloak.
+	// MÉTODO CORREGIDO para extraer los roles de Keycloak.
 	@Bean
 	public JwtAuthenticationConverter jwtAuthenticationConverter() {
 		JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-		
+
 		// 1. Define el conversor que extraerá y prefijará los roles
 		converter.setJwtGrantedAuthoritiesConverter(this::extractRolesFromKeycloak);
-		
-		// 2. Define qué claim usar como nombre principal (opcional, pero buena práctica)
+
+		// 2. Define qué claim usar como nombre principal (opcional, pero buena
+		// práctica)
 		converter.setPrincipalClaimName("preferred_username");
-		
+
 		return converter;
 	}
 
 	/**
-	 * Función que extrae los roles anidados del claim 'realm_access.roles' de Keycloak 
+	 * Función que extrae los roles anidados del claim 'realm_access.roles' de
+	 * Keycloak
 	 * y los transforma en autoridades de Spring Security (ej: ROLE_ROLE-A).
 	 */
 	@SuppressWarnings("unchecked")
@@ -105,16 +119,18 @@ public CorsConfigurationSource corsConfigurationSource() {
 			Object realmAccessClaim = jwt.getClaim("realm_access");
 			if (realmAccessClaim instanceof java.util.Map) {
 				java.util.Map<String, Object> realmAccess = (java.util.Map<String, Object>) realmAccessClaim;
-				
+
 				// Obtiene la lista de roles del campo 'roles'
 				Object rolesClaim = realmAccess.get("roles");
 				if (rolesClaim instanceof Collection) {
 					Collection<String> roles = (Collection<String>) rolesClaim;
-					
-					// Mapea cada rol, añade el prefijo "ROLE_" y lo convierte a SimpleGrantedAuthority
+
+					// Mapea cada rol, añade el prefijo "ROLE_" y lo convierte a
+					// SimpleGrantedAuthority
 					return roles.stream()
-						.map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // 💥 Aquí se mapea el prefijo "ROLE_"
-						.collect(Collectors.toList());
+							.map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // 💥 Aquí se mapea el prefijo
+																						// "ROLE_"
+							.collect(Collectors.toList());
 				}
 			}
 		}
@@ -122,12 +138,24 @@ public CorsConfigurationSource corsConfigurationSource() {
 		return java.util.Collections.emptyList();
 	}
 
-	// El resto del filtro sigue igual
+	// 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-		// --- CONFIGURACIÓN ORIGINAL COMENTADA TEMPORALMENTE ---
-		/*
+		// DEBUG: Imprimir header Authorization en cada request
+		org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter loggingFilter = new org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter() {
+			@Override
+			protected Object getPreAuthenticatedPrincipal(jakarta.servlet.http.HttpServletRequest request) {
+				System.out.println("[DEBUG] Authorization header: " + request.getHeader("Authorization"));
+				return null;
+			}
+			@Override
+			protected Object getPreAuthenticatedCredentials(jakarta.servlet.http.HttpServletRequest request) {
+				return null;
+			}
+		};
+		http.addFilterBefore(loggingFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
+		// --- CONFIGURACIÓN ORIGINAL HABILITADA ---
 		http
 			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.csrf(csrf -> csrf.disable())
@@ -139,14 +167,14 @@ public CorsConfigurationSource corsConfigurationSource() {
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/ping", "/version").permitAll()
 				.requestMatchers("/conectorping", "/backendping").permitAll()
-				.requestMatchers("/cirugia/**").permitAll()  //borrar despues
-				.requestMatchers("/pacientes/**").permitAll()  //borrar despues
-				.requestMatchers("/personal/**").permitAll()  //borrar despues
-				.requestMatchers("/quirofano/**").permitAll()  //borrar despues
+				.requestMatchers("/cirugia/**").permitAll() //borrar despues
+				.requestMatchers("/pacientes/**").permitAll() //borrar despues
+				.requestMatchers("/personal/**").permitAll() //borrar despues
+				.requestMatchers("/quirofano/**").permitAll() //borrar despues
 				// Endpoints que requieren autenticación
 				.requestMatchers("/secure/**").authenticated()
-				.requestMatchers("/alumno/**").authenticated() 
-				.requestMatchers("/items/**").authenticated()   
+				.requestMatchers("/alumno/**").authenticated()
+				.requestMatchers("/items/**").authenticated()
 				// Cualquier otra petición requiere autenticación
 				.anyRequest().authenticated()
 			)
@@ -162,16 +190,14 @@ public CorsConfigurationSource corsConfigurationSource() {
 				})
 			);
 		return http.build();
-		*/
 
 		// --- CONFIGURACIÓN TEMPORAL: PERMITIR TODO ---
-		http
-			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-			.csrf(csrf -> csrf.disable())
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(authz -> authz
-				.anyRequest().permitAll()
-			);
-		return http.build();
+		// http
+		// 	.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+		// 	.csrf(csrf -> csrf.disable())
+		// 	.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		// 	.authorizeHttpRequests(authz -> authz
+		// 		.anyRequest().permitAll());
+		// return http.build();
 	}
 }
