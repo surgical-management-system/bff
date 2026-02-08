@@ -6,15 +6,13 @@ import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.service.ApiConectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 
 @RestController
+@PreAuthorize("hasRole('admin')")
 @RequestMapping("/users")
 public class UsuarioController {
 

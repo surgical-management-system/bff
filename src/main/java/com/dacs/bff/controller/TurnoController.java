@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Slf4j
 @RestController
+@PreAuthorize("hasRole('admin') or hasRole('personal_medico')")
 @RequestMapping("/turnos")
 public class TurnoController {
 
@@ -34,12 +36,23 @@ public class TurnoController {
             @RequestParam(required = true) String fechaFin,
             @RequestParam(required = false, defaultValue = "0") Integer quirofanoId,
             @RequestParam(required = false, defaultValue = "") String estado) {
-        return turnosService.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado);
+                try {
+                    ResponseEntity<PaginacionDto.Response<TurnoDto>> turnos = turnosService.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado);
+                    return turnos;
+                } catch (Exception e) {
+                    log.error("Error al obtener turnos disponibles: {}", e.getMessage());
+                    return ResponseEntity.status(500).build();
+                }
     }
 
     @PostMapping("generar-turnos")
     public ResponseEntity<Void> generarTurnos(@RequestBody String entity) {
-        return turnosService.generarTurnos(entity);
+        try {
+            return turnosService.generarTurnos(entity);
+        } catch (Exception e) {
+            log.error("Error al generar turnos: {}", e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
 }

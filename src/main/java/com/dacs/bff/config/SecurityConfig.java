@@ -124,7 +124,7 @@ public class SecurityConfig {
 				Object rolesClaim = realmAccess.get("roles");
 				if (rolesClaim instanceof Collection) {
 					Collection<String> roles = (Collection<String>) rolesClaim;
-
+					
 					// Mapea cada rol, añade el prefijo "ROLE_" y lo convierte a
 					// SimpleGrantedAuthority
 					return roles.stream()
@@ -167,10 +167,10 @@ public class SecurityConfig {
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/ping", "/version").permitAll()
 				.requestMatchers("/conectorping", "/backendping").permitAll()
-				.requestMatchers("/cirugia/**").permitAll() //borrar despues
-				.requestMatchers("/pacientes/**").permitAll() //borrar despues
-				.requestMatchers("/personal/**").permitAll() //borrar despues
-				.requestMatchers("/quirofano/**").permitAll() //borrar despues
+				// .requestMatchers("/cirugia/**").permitAll() //borrar despues
+				// .requestMatchers("/pacientes/**").permitAll() //borrar despues
+				// .requestMatchers("/personal/**").permitAll() //borrar despues
+				// .requestMatchers("/quirofano/**").permitAll() //borrar despues
 				// Endpoints que requieren autenticación
 				.requestMatchers("/secure/**").authenticated()
 				.requestMatchers("/alumno/**").authenticated()
