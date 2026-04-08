@@ -167,6 +167,7 @@ public class SecurityConfig {
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/ping", "/version").permitAll()
 				.requestMatchers("/conectorping", "/backendping").permitAll()
+                .requestMatchers("/turnos/generar-turnos").permitAll()
 				// .requestMatchers("/cirugia/**").permitAll() //borrar despues
 				// .requestMatchers("/pacientes/**").permitAll() //borrar despues
 				// .requestMatchers("/personal/**").permitAll() //borrar despues

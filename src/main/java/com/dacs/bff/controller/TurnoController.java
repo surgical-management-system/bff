@@ -45,7 +45,10 @@ public class TurnoController {
                 }
     }
 
+
+    // BORRAR
     @PostMapping("generar-turnos")
+        @PreAuthorize("permitAll()")
     public ResponseEntity<Void> generarTurnos(@RequestBody String entity) {
         try {
             return turnosService.generarTurnos(entity);
