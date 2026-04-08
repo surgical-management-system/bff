@@ -12,21 +12,6 @@ This project is the Backend For Frontend (BFF) of the main application. Its func
 ## Configuration
 [See the infrastructure configuration (PDF)](assets/DACS-configuracion-de-infraestructura.pdf)
 
-# Run locally
-```
-mvn clean spring-boot:run
-```
-
-You can optionally add the parameter:
-
--P local
-
-```
-
-# BFF (Backend For Frontend)
-
-This is the **BFF** project for DACS2025.
-
 ## Description
 A Spring Boot application acting as a Backend For Frontend, aggregating and orchestrating data from multiple backend services for the DACS2025 system.
 
