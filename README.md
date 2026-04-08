@@ -4,16 +4,13 @@ Backend For Frontend (BFF) microservice.
 
 ## Description
 
-This project is the Backend For Frontend (BFF) of the main application. Its function is to act as an intermediate layer between the frontend and the different backend services, centralizing integration, authentication, and authorization logic, simplifying API consumption, and improving security and user experience.
+A Spring Boot application acting as a Backend For Frontend, aggregating and orchestrating data from multiple backend services for the DACS2025 system. Its function is to act as an intermediate layer between the frontend and the different backend services, centralizing integration, authentication, and authorization logic, simplifying API consumption, and improving security and user experience.
 
 ## Objective
 ![Alternative text](assets/infraestructura.png)
 
 ## Configuration
 [See the infrastructure configuration (PDF)](assets/DACS-configuracion-de-infraestructura.pdf)
-
-## Description
-A Spring Boot application acting as a Backend For Frontend, aggregating and orchestrating data from multiple backend services for the DACS2025 system.
 
 ## Features
 - API Gateway
@@ -34,7 +31,6 @@ A Spring Boot application acting as a Backend For Frontend, aggregating and orch
 - Java 17+
 - Spring Boot
 - Maven
-
 
 ## Requirements
 - Java 17+
