@@ -16,7 +16,6 @@ import com.dacs.bff.util.ApiResponseBuilder;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +46,12 @@ public class CirugiaController {
             @RequestParam(value = "tamano", defaultValue = "16") int tamano,
             @RequestParam(value = "fechaInicio", required = false) String fechaInicio,
             @RequestParam(value = "fechaFin", required = false) String fechaFin,
-            @RequestParam(value = "estado", required = false) String estado) {
+            @RequestParam(value = "estado", required = false) String estado,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "sort", required = false, defaultValue = "fechaHoraInicio") String sort,
+            @RequestParam(value = "order", required = false, defaultValue = "asc") String order) {
         try {
-            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(pagina, tamano, fechaInicio, fechaFin, estado);  
+            PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(pagina, tamano, fechaInicio, fechaFin, estado, search, sort, order);  
             return ApiResponseBuilder.okWithPagination(resp);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener cirugías: " + e.getMessage());

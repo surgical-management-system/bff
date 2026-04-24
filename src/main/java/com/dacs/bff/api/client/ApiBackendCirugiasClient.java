@@ -1,7 +1,5 @@
 package com.dacs.bff.api.client;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dacs.bff.config.FeignConfig;
 import com.dacs.bff.dto.CirugiaDTO;
-import com.dacs.bff.dto.CirugiaDTO.FrontResponse;
 import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
@@ -34,7 +31,10 @@ public interface ApiBackendCirugiasClient {
                         @RequestParam(name = "tamano", required = false) Integer tamano,
                         @RequestParam(name = "fechaInicio", required = false) String fechaInicio,
                         @RequestParam(name = "fechaFin", required = false) String fechaFin,
-                        @RequestParam(name = "estado", required = false) String estado);
+                        @RequestParam(name = "estado", required = false) String estado,
+                        @RequestParam(name = "search", required = false) String search,
+                        @RequestParam(name = "sort", required = false) String sort,
+                        @RequestParam(name = "order", required = false) String order);
 
         @PostMapping("/cirugia")
         ResponseEntity<CirugiaDTO.BackResponse> create(@RequestBody CirugiaDTO.FrontRequest cirugia);

@@ -1,6 +1,5 @@
 package com.dacs.bff.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -31,8 +30,8 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin, String estado) {
-		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(pagina, tamaño, fechaInicio, fechaFin, estado);
+	public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin, String estado, String search, String sort, String order) {
+		PaginacionDto.Response<CirugiaDTO.BackResponse> backResp = apiBackendCirugiaClient.getCirugias(pagina, tamaño, fechaInicio, fechaFin, estado, search, sort, order);
 		List<CirugiaDTO.FrontResponse> frontList = backResp.getContenido().stream()
 				.map(item -> cirugiaMapper.toFrontResponse(item))
 				.toList();

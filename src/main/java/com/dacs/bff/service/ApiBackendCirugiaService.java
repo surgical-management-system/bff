@@ -1,7 +1,5 @@
 package com.dacs.bff.service;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,8 @@ import com.dacs.bff.dto.ServicioDto;
 
 public interface ApiBackendCirugiaService {
 
-    public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio, String fechaFin, String estado);
+            public PaginacionDto.Response<CirugiaDTO.FrontResponse> getCirugias(Integer pagina, Integer tamaño, String fechaInicio,
+                    String fechaFin, String estado, String search, String sort, String order);
 
     public ResponseEntity<CirugiaDTO.FrontResponse> createCirugia(CirugiaDTO.FrontRequest cirugia) throws Exception;
 
