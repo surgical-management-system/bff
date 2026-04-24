@@ -11,6 +11,7 @@ import com.dacs.bff.dto.CirugiaDTO;
 import com.dacs.bff.dto.IntervencionDto;
 import com.dacs.bff.dto.ServicioDto;
 // import com.dacs.bff.dto.CirugiaPageResponse;
+import com.dacs.bff.exeption.BackendApiException;
 import com.dacs.bff.service.ApiBackendCirugiaService;
 import com.dacs.bff.util.ApiResponseBuilder;
 
@@ -53,6 +54,8 @@ public class CirugiaController {
         try {
             PaginacionDto.Response<CirugiaDTO.FrontResponse> resp = cirugiaService.getCirugias(pagina, tamano, fechaInicio, fechaFin, estado, search, sort, order);  
             return ApiResponseBuilder.okWithPagination(resp);
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener cirugías: " + e.getMessage());
         }
@@ -64,6 +67,8 @@ public class CirugiaController {
         try {
             ResponseEntity<CirugiaDTO.FrontResponse> response = cirugiaService.createCirugia(cirugiaDTO);
             return ApiResponseBuilder.created(response.getBody(), "Cirugia creada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al crear la cirugía: " + e.getMessage());
         }
@@ -75,6 +80,8 @@ public class CirugiaController {
         try {
             ResponseEntity<CirugiaDTO.FrontResponse> data = cirugiaService.updateCirugia(id, cirugiaDTO);
             return ApiResponseBuilder.ok(data.getBody(), "Cirugia actualizada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al actualizar la cirugía: " + e.getMessage());
         }
@@ -85,6 +92,8 @@ public class CirugiaController {
         try {
             cirugiaService.deleteCirugia(id);
             return ApiResponseBuilder.ok(null, "Cirugia eliminada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al eliminar la cirugia: " + e.getMessage());
         }
@@ -95,6 +104,8 @@ public class CirugiaController {
         try {
             ResponseEntity<List<MiembroEquipoDTO.Response>> response = cirugiaService.getEquipoMedico(id);
             return ApiResponseBuilder.ok(response.getBody());
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener equipo médico: " + e.getMessage());
         }
@@ -106,6 +117,8 @@ public class CirugiaController {
         try {
             ResponseEntity<List<MiembroEquipoDTO.Response>> response = cirugiaService.saveEquipoMedico(miembros, id);
             return ApiResponseBuilder.ok(response.getBody(), "Equipo medico guardado exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al guardar equipo médico: " + e.getMessage());
         }
@@ -117,6 +130,8 @@ public class CirugiaController {
         try {
             ResponseEntity<List<ServicioDto>> servicios = cirugiaService.getServicios(tamano, pagina);
             return ApiResponseBuilder.ok(servicios.getBody());
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener servicios: " + e.getMessage());
         }
@@ -129,6 +144,8 @@ public class CirugiaController {
         try {
             ResponseEntity<CirugiaDTO.FrontResponse> response = cirugiaService.finalizarCirugia(id);
             return ApiResponseBuilder.ok(response.getBody(), "Cirugía finalizada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al finalizar cirugía: " + e.getMessage());
         }
@@ -142,6 +159,8 @@ public class CirugiaController {
         try {
             ResponseEntity<List<IntervencionDto>> response = cirugiaService.getIntervencionesByCirugiaId(cirugiaId);
             return ApiResponseBuilder.ok(response.getBody());
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener intervenciones: " + e.getMessage());
         }
@@ -153,6 +172,8 @@ public class CirugiaController {
         try {
             ResponseEntity<IntervencionDto> response = cirugiaService.createIntervencion(cirugiaId, intervencion);
             return ApiResponseBuilder.created(response.getBody(), "Intervención creada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al crear intervención: " + e.getMessage());
         }
@@ -164,6 +185,8 @@ public class CirugiaController {
         try {
             ResponseEntity<IntervencionDto> response = cirugiaService.updateIntervencion(cirugiaId, intervencionId, intervencion);
             return ApiResponseBuilder.ok(response.getBody(), "Intervención actualizada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al actualizar intervención: " + e.getMessage());
         }
@@ -175,6 +198,8 @@ public class CirugiaController {
         try {
             cirugiaService.deleteIntervencion(cirugiaId, intervencionId);
             return ApiResponseBuilder.ok(null, "Intervención eliminada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al eliminar intervención: " + e.getMessage());
         }

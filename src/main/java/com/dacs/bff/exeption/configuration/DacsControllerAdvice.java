@@ -13,6 +13,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.dacs.bff.exeption.ExceptionResponse;
+import com.dacs.bff.exeption.BackendApiException;
 import com.dacs.bff.exeption.GenericException;
 
 import java.util.Locale;
@@ -33,6 +34,16 @@ public class DacsControllerAdvice {
 				this.codePrefix + "_" + ex.getError().code(), this.getMessage(ex.getError().message(), ex.getParams()));
 
 		return ResponseEntity.status(ex.getError().status()).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(BackendApiException.class)
+	public ResponseEntity<ExceptionResponse> handleBackendApiException(BackendApiException ex, WebRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(
+				ex.getStatus().value(),
+				this.codePrefix + "_" + ex.getCode(),
+				ex.getDescription());
+
+		return ResponseEntity.status(ex.getStatus()).body(exceptionResponse);
 	}
 
 	@ExceptionHandler(value = { MissingPathVariableException.class })
@@ -73,6 +84,6 @@ public class DacsControllerAdvice {
 	}
 
 	protected String getMessage(String exceptionMessage, Object... params) {
-		return this.messageSource.getMessage(exceptionMessage, params, new Locale("es", "AR"));
+		return this.messageSource.getMessage(exceptionMessage, params, Locale.forLanguageTag("es-AR"));
 	}
 }
