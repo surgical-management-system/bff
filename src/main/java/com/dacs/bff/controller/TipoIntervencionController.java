@@ -12,7 +12,6 @@ import com.dacs.bff.api.client.ApiBackendTipoIntervenciones;
 import com.dacs.bff.dto.TipoIntervencionDto;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -24,9 +23,10 @@ public class TipoIntervencionController {
     private ApiBackendTipoIntervenciones tipoIntervencionService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseEntity<List<TipoIntervencionDto>>> getMethodName() {
+    public ResponseEntity<List<TipoIntervencionDto>> getMethodName() {
         try {
-            return ResponseEntity.ok(tipoIntervencionService.getTipoIntervenciones());
+            ResponseEntity<List<TipoIntervencionDto>> response = tipoIntervencionService.getTipoIntervenciones();
+            return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }

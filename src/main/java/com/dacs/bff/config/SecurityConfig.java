@@ -1,16 +1,5 @@
 package com.dacs.bff.config;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-import java.io.IOException;
-
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -26,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -161,6 +151,7 @@ public class SecurityConfig {
 			.csrf(csrf -> csrf.disable())
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(authz -> authz
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				// Endpoints públicos para health checks y ping
 				.requestMatchers("/metrics/health", "/metrics/info").permitAll()
 				.requestMatchers("/actuator/**").permitAll()
