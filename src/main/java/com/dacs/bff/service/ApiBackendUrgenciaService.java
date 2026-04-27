@@ -24,4 +24,12 @@ public interface ApiBackendUrgenciaService {
     ResponseEntity<List<MiembroEquipoDTO.Response>> getEquipoMedico(Long id);
 
     ResponseEntity<List<MiembroEquipoDTO.Response>> saveEquipoMedico(List<MiembroEquipoDTO.Create> miembros, Long id);
+
+    ResponseEntity<List<com.dacs.bff.dto.IntervencionDto>> getIntervencionesByUrgenciaId(Long urgenciaId);
+
+    ResponseEntity<com.dacs.bff.dto.IntervencionDto> createIntervencionForUrgencia(Long urgenciaId, com.dacs.bff.dto.IntervencionDto intervencion);
+
+    ResponseEntity<com.dacs.bff.dto.IntervencionDto> updateIntervencionForUrgencia(Long urgenciaId, Long intervencionId, com.dacs.bff.dto.IntervencionDto intervencion);
+
+    ResponseEntity<Void> deleteIntervencionForUrgencia(Long urgenciaId, Long intervencionId);
 }

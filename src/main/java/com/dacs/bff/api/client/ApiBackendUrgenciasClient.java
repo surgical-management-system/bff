@@ -49,4 +49,20 @@ public interface ApiBackendUrgenciasClient {
         @PostMapping("/urgencia/{id}/equipo-medico")
         ResponseEntity<List<MiembroEquipoDTO.BackResponse>> saveEquipoMedico(@PathVariable("id") Long id,
                         @RequestBody List<MiembroEquipoDTO.Create> miembros);
+
+        @GetMapping("/urgencia/{urgenciaId}/intervenciones")
+        ResponseEntity<List<com.dacs.bff.dto.IntervencionDto>> getIntervencionesByUrgenciaId(@PathVariable("urgenciaId") Long urgenciaId);
+
+        @PostMapping("/urgencia/{urgenciaId}/intervenciones")
+        ResponseEntity<com.dacs.bff.dto.IntervencionDto> createIntervencionForUrgencia(@PathVariable("urgenciaId") Long urgenciaId,
+                        @RequestBody com.dacs.bff.dto.IntervencionDto intervencion);
+
+        @PutMapping("/urgencia/{urgenciaId}/intervenciones/{intervencionId}")
+        ResponseEntity<com.dacs.bff.dto.IntervencionDto> updateIntervencionForUrgencia(@PathVariable("urgenciaId") Long urgenciaId,
+                        @PathVariable("intervencionId") Long intervencionId,
+                        @RequestBody com.dacs.bff.dto.IntervencionDto intervencion);
+
+        @DeleteMapping("/urgencia/{urgenciaId}/intervenciones/{intervencionId}")
+        ResponseEntity<Void> deleteIntervencionForUrgencia(@PathVariable("urgenciaId") Long urgenciaId,
+                        @PathVariable("intervencionId") Long intervencionId);
 }

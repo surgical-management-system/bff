@@ -128,4 +128,55 @@ public class UrgenciaController {
             return ApiResponseBuilder.serverError("Error al guardar equipo médico: " + e.getMessage());
         }
     }
+
+    @GetMapping("/{id}/intervenciones")
+    public ResponseEntity<ApiResponse<List<com.dacs.bff.dto.IntervencionDto>>> getIntervencionesByUrgenciaId(@PathVariable Long id) {
+        try {
+            ResponseEntity<List<com.dacs.bff.dto.IntervencionDto>> response = urgenciaService.getIntervencionesByUrgenciaId(id);
+            return ApiResponseBuilder.ok(response.getBody());
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al obtener intervenciones: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/intervenciones")
+    public ResponseEntity<ApiResponse<com.dacs.bff.dto.IntervencionDto>> createIntervencionForUrgencia(@PathVariable Long id,
+            @RequestBody com.dacs.bff.dto.IntervencionDto intervencion) {
+        try {
+            ResponseEntity<com.dacs.bff.dto.IntervencionDto> response = urgenciaService.createIntervencionForUrgencia(id, intervencion);
+            return ApiResponseBuilder.created(response.getBody(), "Intervención creada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al crear intervención: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/intervenciones/{intervencionId}")
+    public ResponseEntity<ApiResponse<com.dacs.bff.dto.IntervencionDto>> updateIntervencionForUrgencia(@PathVariable Long id,
+            @PathVariable Long intervencionId, @RequestBody com.dacs.bff.dto.IntervencionDto intervencion) {
+        try {
+            ResponseEntity<com.dacs.bff.dto.IntervencionDto> response = urgenciaService.updateIntervencionForUrgencia(id, intervencionId, intervencion);
+            return ApiResponseBuilder.ok(response.getBody(), "Intervención actualizada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al actualizar intervención: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}/intervenciones/{intervencionId}")
+    public ResponseEntity<ApiResponse<Void>> deleteIntervencionForUrgencia(@PathVariable Long id,
+            @PathVariable Long intervencionId) {
+        try {
+            urgenciaService.deleteIntervencionForUrgencia(id, intervencionId);
+            return ApiResponseBuilder.ok(null, "Intervención eliminada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al eliminar intervención: " + e.getMessage());
+        }
+    }
 }

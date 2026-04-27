@@ -79,4 +79,27 @@ public class ApiBackendUrgenciaServiceImpl implements ApiBackendUrgenciaService 
                         .map(back -> modelMapper.map(back, MiembroEquipoDTO.Response.class))
                         .toList());
     }
+
+    @Override
+    public ResponseEntity<List<com.dacs.bff.dto.IntervencionDto>> getIntervencionesByUrgenciaId(Long urgenciaId) {
+        ResponseEntity<List<com.dacs.bff.dto.IntervencionDto>> response = apiBackendUrgenciasClient.getIntervencionesByUrgenciaId(urgenciaId);
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
+    @Override
+    public ResponseEntity<com.dacs.bff.dto.IntervencionDto> createIntervencionForUrgencia(Long urgenciaId, com.dacs.bff.dto.IntervencionDto intervencion) {
+        ResponseEntity<com.dacs.bff.dto.IntervencionDto> response = apiBackendUrgenciasClient.createIntervencionForUrgencia(urgenciaId, intervencion);
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
+    @Override
+    public ResponseEntity<com.dacs.bff.dto.IntervencionDto> updateIntervencionForUrgencia(Long urgenciaId, Long intervencionId, com.dacs.bff.dto.IntervencionDto intervencion) {
+        ResponseEntity<com.dacs.bff.dto.IntervencionDto> response = apiBackendUrgenciasClient.updateIntervencionForUrgencia(urgenciaId, intervencionId, intervencion);
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteIntervencionForUrgencia(Long urgenciaId, Long intervencionId) {
+        return apiBackendUrgenciasClient.deleteIntervencionForUrgencia(urgenciaId, intervencionId);
+    }
 }
