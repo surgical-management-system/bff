@@ -87,6 +87,18 @@ public class CirugiaController {
         }
     }
 
+    @PutMapping("/{id}/inicializar")
+    public ResponseEntity<ApiResponse<CirugiaDTO.FrontResponse>> inicializarCirugia(@PathVariable @NotNull Long id) {
+        try {
+            ResponseEntity<CirugiaDTO.FrontResponse> response = cirugiaService.inicializarCirugia(id);
+            return ApiResponseBuilder.ok(response.getBody(), "Cirugia inicializada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al inicializar la cirugía: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable @NotNull Long id) {
         try {

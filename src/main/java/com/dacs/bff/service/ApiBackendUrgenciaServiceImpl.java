@@ -2,11 +2,13 @@ package com.dacs.bff.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dacs.bff.api.client.ApiBackendUrgenciasClient;
+import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.UrgenciaDTO;
 import com.dacs.bff.util.PaginatedResponseUtil;
@@ -20,6 +22,9 @@ public class ApiBackendUrgenciaServiceImpl implements ApiBackendUrgenciaService 
 
     @Autowired
     private UrgenciaMapper urgenciaMapper;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public PaginacionDto.Response<UrgenciaDTO.FrontResponse> getUrgencias(Integer pagina, Integer tamano, String fechaInicio,
@@ -47,5 +52,31 @@ public class ApiBackendUrgenciaServiceImpl implements ApiBackendUrgenciaService 
     @Override
     public ResponseEntity<Void> deleteUrgencia(Long id) throws Exception {
         return apiBackendUrgenciasClient.delete(id);
+    }
+
+    @Override
+    public ResponseEntity<UrgenciaDTO.FrontResponse> inicializarUrgencia(Long id) {
+        ResponseEntity<UrgenciaDTO.BackResponse> backResp = apiBackendUrgenciasClient.inicializarUrgencia(id);
+        return ResponseEntity.status(backResp.getStatusCode()).body(urgenciaMapper.toFrontResponse(backResp.getBody()));
+    }
+
+    @Override
+    public ResponseEntity<List<MiembroEquipoDTO.Response>> getEquipoMedico(Long id) {
+        ResponseEntity<List<MiembroEquipoDTO.BackResponse>> response = apiBackendUrgenciasClient.getEquipoMedico(id);
+        return ResponseEntity.status(response.getStatusCode())
+                .body(response.getBody().stream()
+                        .map(back -> modelMapper.map(back, MiembroEquipoDTO.Response.class))
+                        .toList());
+    }
+
+    @Override
+    public ResponseEntity<List<MiembroEquipoDTO.Response>> saveEquipoMedico(List<MiembroEquipoDTO.Create> miembros,
+            Long id) {
+        ResponseEntity<List<MiembroEquipoDTO.BackResponse>> response = apiBackendUrgenciasClient.saveEquipoMedico(id,
+                miembros);
+        return ResponseEntity.status(response.getStatusCode())
+                .body(response.getBody().stream()
+                        .map(back -> modelMapper.map(back, MiembroEquipoDTO.Response.class))
+                        .toList());
     }
 }

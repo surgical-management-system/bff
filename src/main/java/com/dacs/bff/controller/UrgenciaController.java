@@ -1,5 +1,7 @@
 package com.dacs.bff.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dacs.bff.dto.ApiResponse;
+import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.UrgenciaDTO;
 import com.dacs.bff.exeption.BackendApiException;
@@ -76,6 +79,18 @@ public class UrgenciaController {
         }
     }
 
+    @PutMapping("/{id}/inicializar")
+    public ResponseEntity<ApiResponse<UrgenciaDTO.FrontResponse>> inicializarUrgencia(@PathVariable Long id) {
+        try {
+            ResponseEntity<UrgenciaDTO.FrontResponse> response = urgenciaService.inicializarUrgencia(id);
+            return ApiResponseBuilder.ok(response.getBody(), "Urgencia inicializada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al inicializar urgencia: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         try {
@@ -85,6 +100,32 @@ public class UrgenciaController {
             return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al eliminar urgencia: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/equipo-medico")
+    public ResponseEntity<ApiResponse<List<MiembroEquipoDTO.Response>>> getEquipoMedico(@PathVariable Long id) {
+        try {
+            ResponseEntity<List<MiembroEquipoDTO.Response>> response = urgenciaService.getEquipoMedico(id);
+            return ApiResponseBuilder.ok(response.getBody());
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al obtener equipo médico: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/equipo-medico")
+    public ResponseEntity<ApiResponse<List<MiembroEquipoDTO.Response>>> postEquipoMedico(@PathVariable Long id,
+            @RequestBody List<MiembroEquipoDTO.Create> miembros) {
+        try {
+            ResponseEntity<List<MiembroEquipoDTO.Response>> response = urgenciaService.saveEquipoMedico(miembros,
+                    id);
+            return ApiResponseBuilder.ok(response.getBody(), "Equipo medico guardado exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al guardar equipo médico: " + e.getMessage());
         }
     }
 }

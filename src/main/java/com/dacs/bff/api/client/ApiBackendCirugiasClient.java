@@ -43,6 +43,9 @@ public interface ApiBackendCirugiasClient {
         ResponseEntity<CirugiaDTO.BackResponse> update(@PathVariable("id") String id,
                         @RequestBody CirugiaDTO.FrontRequest cirugia);
 
+        @PutMapping("/cirugia/{id}/inicializar")
+        ResponseEntity<CirugiaDTO.BackResponse> inicializarCirugia(@PathVariable("id") Long id);
+
         @DeleteMapping("/cirugia/{id}")
         ResponseEntity<Void> delete(@PathVariable("id") Long id);
 

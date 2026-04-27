@@ -61,6 +61,12 @@ public class ApiBackendCirugiaServiceImpl implements ApiBackendCirugiaService {
 	}
 
 	@Override
+	public ResponseEntity<FrontResponse> inicializarCirugia(Long id) {
+		ResponseEntity<CirugiaDTO.BackResponse> backResponse = apiBackendCirugiaClient.inicializarCirugia(id);
+		return ResponseEntity.status(backResponse.getStatusCode()).body(cirugiaMapper.toFrontResponse(backResponse.getBody()));
+	}
+
+	@Override
 	public ResponseEntity<List<MiembroEquipoDTO.Response>> getEquipoMedico(Long id) {
 		ResponseEntity<List<MiembroEquipoDTO.BackResponse>> response = apiBackendCirugiaClient.getEquipoMedico(id);
 		return ResponseEntity.status(response.getStatusCode())

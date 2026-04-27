@@ -29,6 +29,8 @@ public interface ApiBackendCirugiaService {
     public ResponseEntity<CirugiaDTO.FrontResponse> updateCirugia(String id, CirugiaDTO.FrontRequest cirugia)
             throws Exception;
 
+    public ResponseEntity<FrontResponse> inicializarCirugia(Long id);
+
     public ResponseEntity<List<IntervencionDto>> getIntervencionesByCirugiaId(Long cirugiaId);
 
     public ResponseEntity<IntervencionDto> createIntervencion(Long cirugiaId, IntervencionDto intervencion);

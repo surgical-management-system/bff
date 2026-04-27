@@ -16,6 +16,7 @@ public class MiembroEquipoDTO {
     private String legajo;
     private String nombre;
     private Long cirugiaId;
+    private Long urgenciaId;
     private String rol;
     }
 
@@ -24,6 +25,9 @@ public class MiembroEquipoDTO {
     static public class Create {
         @JsonProperty("cirugiaId")
         private Long cirugiaId;
+
+        @JsonProperty("urgenciaId")
+        private Long urgenciaId;
 
         @JsonProperty("personalId")
         private Long personalId;
@@ -35,6 +39,7 @@ public class MiembroEquipoDTO {
     @Data
     static public class BackResponse {
         private Long cirugiaId;
+        private Long urgenciaId;
         private String rol;
         private LocalDateTime fechaAsignacion;
 

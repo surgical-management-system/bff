@@ -1,5 +1,7 @@
 package com.dacs.bff.api.client;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dacs.bff.config.FeignConfig;
+import com.dacs.bff.dto.MiembroEquipoDTO;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.UrgenciaDTO;
 
@@ -36,4 +39,14 @@ public interface ApiBackendUrgenciasClient {
 
     @DeleteMapping("/urgencia/{id}")
     ResponseEntity<Void> delete(@PathVariable("id") Long id);
+
+        @PutMapping("/urgencia/{id}/inicializar")
+        ResponseEntity<UrgenciaDTO.BackResponse> inicializarUrgencia(@PathVariable("id") Long id);
+
+        @GetMapping("/urgencia/{id}/equipo-medico")
+        ResponseEntity<List<MiembroEquipoDTO.BackResponse>> getEquipoMedico(@PathVariable("id") Long id);
+
+        @PostMapping("/urgencia/{id}/equipo-medico")
+        ResponseEntity<List<MiembroEquipoDTO.BackResponse>> saveEquipoMedico(@PathVariable("id") Long id,
+                        @RequestBody List<MiembroEquipoDTO.Create> miembros);
 }
