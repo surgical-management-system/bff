@@ -43,6 +43,9 @@ public interface ApiBackendUrgenciasClient {
         @PutMapping("/urgencia/{id}/inicializar")
         ResponseEntity<UrgenciaDTO.BackResponse> inicializarUrgencia(@PathVariable("id") Long id);
 
+        @PutMapping("/urgencia/{id}/finalizar")
+        ResponseEntity<UrgenciaDTO.BackResponse> finalizarUrgencia(@PathVariable("id") Long id);
+
         @GetMapping("/urgencia/{id}/equipo-medico")
         ResponseEntity<List<MiembroEquipoDTO.BackResponse>> getEquipoMedico(@PathVariable("id") Long id);
 

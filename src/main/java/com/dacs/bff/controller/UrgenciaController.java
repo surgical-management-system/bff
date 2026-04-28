@@ -91,6 +91,18 @@ public class UrgenciaController {
         }
     }
 
+    @PutMapping("/{id}/finalizar")
+    public ResponseEntity<ApiResponse<UrgenciaDTO.FrontResponse>> finalizarUrgencia(@PathVariable Long id) {
+        try {
+            ResponseEntity<UrgenciaDTO.FrontResponse> response = urgenciaService.finalizarUrgencia(id);
+            return ApiResponseBuilder.ok(response.getBody(), "Urgencia finalizada exitosamente");
+        } catch (BackendApiException e) {
+            return ApiResponseBuilder.buildResponse(null, e.getStatus(), e.getDescription());
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al finalizar urgencia: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         try {

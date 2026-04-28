@@ -21,6 +21,8 @@ public interface ApiBackendUrgenciaService {
 
     ResponseEntity<UrgenciaDTO.FrontResponse> inicializarUrgencia(Long id);
 
+    ResponseEntity<UrgenciaDTO.FrontResponse> finalizarUrgencia(Long id);
+
     ResponseEntity<List<MiembroEquipoDTO.Response>> getEquipoMedico(Long id);
 
     ResponseEntity<List<MiembroEquipoDTO.Response>> saveEquipoMedico(List<MiembroEquipoDTO.Create> miembros, Long id);

@@ -2,12 +2,11 @@ package com.dacs.bff.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.Data;
-
 public class TurnoDto {
     private Long id;
     private LocalDateTime fechaHoraInicio;
     private String estado;
+    private Boolean disponible;
     private Long quirofanoId;
     private Long cirugiaId;
 
@@ -20,6 +19,9 @@ public class TurnoDto {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+
+    public Boolean getDisponible() { return disponible; }
+    public void setDisponible(Boolean disponible) { this.disponible = disponible; }
 
     public Long getQuirofanoId() { return quirofanoId; }
     public void setQuirofanoId(Long quirofanoId) { this.quirofanoId = quirofanoId; }

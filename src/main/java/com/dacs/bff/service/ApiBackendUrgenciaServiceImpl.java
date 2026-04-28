@@ -61,6 +61,12 @@ public class ApiBackendUrgenciaServiceImpl implements ApiBackendUrgenciaService 
     }
 
     @Override
+    public ResponseEntity<UrgenciaDTO.FrontResponse> finalizarUrgencia(Long id) {
+        ResponseEntity<UrgenciaDTO.BackResponse> backResp = apiBackendUrgenciasClient.finalizarUrgencia(id);
+        return ResponseEntity.status(backResp.getStatusCode()).body(urgenciaMapper.toFrontResponse(backResp.getBody()));
+    }
+
+    @Override
     public ResponseEntity<List<MiembroEquipoDTO.Response>> getEquipoMedico(Long id) {
         ResponseEntity<List<MiembroEquipoDTO.BackResponse>> response = apiBackendUrgenciasClient.getEquipoMedico(id);
         return ResponseEntity.status(response.getStatusCode())
