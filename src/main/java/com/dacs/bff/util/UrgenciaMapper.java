@@ -20,7 +20,6 @@ public class UrgenciaMapper {
         UrgenciaDTO.FrontResponse front = new UrgenciaDTO.FrontResponse();
         front.setId(backResp.getId());
         front.setFechaHoraInicio(backResp.getFechaHoraInicio());
-        front.setPrioridad(backResp.getPrioridad());
         front.setNivelUrgencia(backResp.getNivelUrgencia());
         front.setEstado(backResp.getEstado());
         front.setAnestesia(backResp.getAnestesia());

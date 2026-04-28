@@ -8,7 +8,9 @@ import com.dacs.bff.dto.TurnoDto;
 
 public interface ApiBackendTurnoService {
     
-    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(Integer pagina, Integer tamano, String fechaInicio, String fechaFin, Integer quirofanoId, String estado);
+    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(Integer pagina, Integer tamano,
+            String fechaInicio, String fechaFin, Integer quirofanoId, String estado, Integer duracionMinutos,
+            Long servicioId);
 
     public ResponseEntity<Void> generarTurnos(String entity);
 }

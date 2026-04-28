@@ -1,7 +1,5 @@
 package com.dacs.bff.api.client;
 
-import java.util.List;
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +21,9 @@ public interface ApiBackendTurnosClient {
             @RequestParam(required = false) String fechaInicio,
             @RequestParam(required = false) String fechaFin, 
             @RequestParam(required = false) Integer quirofanoId,
-            @RequestParam(required = false) String estado);
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) Integer duracionMinutos,
+            @RequestParam(required = false) Long servicioId);
 
     @PostMapping("/turnos/generar-turnos")
     public ResponseEntity<Void> generarTurnos(@RequestBody String entity);

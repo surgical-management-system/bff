@@ -1,8 +1,5 @@
 package com.dacs.bff.controller;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,9 +32,23 @@ public class TurnoController {
             @RequestParam(required = true) String fechaInicio,
             @RequestParam(required = true) String fechaFin,
             @RequestParam(required = false, defaultValue = "0") Integer quirofanoId,
-            @RequestParam(required = false, defaultValue = "") String estado) {
+            @RequestParam(required = false, defaultValue = "") String estado,
+            @RequestParam(required = false) Integer duracionMinutos,
+            @RequestParam(required = false) Integer duracion,
+            @RequestParam(required = false) Integer duracionHoras,
+            @RequestParam(required = false) Long servicioId) {
                 try {
-                    ResponseEntity<PaginacionDto.Response<TurnoDto>> turnos = turnosService.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado);
+                    Integer duracionResuelta = duracionMinutos;
+                    if (duracionResuelta == null && duracion != null) {
+                        duracionResuelta = duracion;
+                    }
+                    if (duracionResuelta == null && duracionHoras != null) {
+                        duracionResuelta = duracionHoras * 60;
+                    }
+
+                    ResponseEntity<PaginacionDto.Response<TurnoDto>> turnos = turnosService.getTurnosDisponibles(
+                            pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado, duracionResuelta,
+                            servicioId);
                     return turnos;
                 } catch (Exception e) {
                     log.error("Error al obtener turnos disponibles: {}", e.getMessage());

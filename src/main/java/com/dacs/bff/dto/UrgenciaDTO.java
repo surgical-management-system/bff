@@ -10,7 +10,6 @@ public class UrgenciaDTO {
     @Data
     public static class BackResponse {
         private Long id;
-        private String prioridad;
         private Integer nivelUrgencia;
         private LocalDateTime fechaHoraInicio;
         private String estado;
@@ -34,7 +33,6 @@ public class UrgenciaDTO {
         private ServicioDto servicio;
         private String nombreServicio;
         private Long servicioId;
-        private String prioridad;
         private Integer nivelUrgencia;
         private String fechaInicio;
         private String horaInicio;
@@ -52,7 +50,6 @@ public class UrgenciaDTO {
     public static class FrontRequest {
         private Long pacienteId;
         private Long servicioId;
-        private String prioridad;
         private Integer nivelUrgencia;
         private LocalDateTime fechaHoraInicio;
         private String estado;

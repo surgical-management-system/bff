@@ -1,7 +1,5 @@
 package com.dacs.bff.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,8 +15,11 @@ public class ApiBackendTurnoServiceImp implements ApiBackendTurnoService {
     private ApiBackendTurnosClient apiBackendTurnosClient;
 
     @Override
-    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(Integer pagina, Integer tamano, String fechaInicio, String fechaFin, Integer quirofanoId, String estado) {
-        return apiBackendTurnosClient.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId, estado);
+    public ResponseEntity<PaginacionDto.Response<TurnoDto>> getTurnosDisponibles(Integer pagina, Integer tamano,
+            String fechaInicio, String fechaFin, Integer quirofanoId, String estado, Integer duracionMinutos,
+            Long servicioId) {
+        return apiBackendTurnosClient.getTurnosDisponibles(pagina, tamano, fechaInicio, fechaFin, quirofanoId,
+                estado, duracionMinutos, servicioId);
     }
 
     @Override
