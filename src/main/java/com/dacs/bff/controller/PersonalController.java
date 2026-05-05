@@ -28,12 +28,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Slf4j
 @RestController
 @RequestMapping("/personal")
-@PreAuthorize("hasRole('admin')")
 public class PersonalController {
 
     @Autowired
     private ApiBackendPersonalService personalService;
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("")
     public ResponseEntity<ApiResponse<PaginacionDto.Response<PersonalDto.BackResponse>>> getPersonal(
             @RequestParam(name = "page", required = false) Integer page,
@@ -47,6 +47,7 @@ public class PersonalController {
         }
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("")
     public ResponseEntity<ApiResponse<PersonalDto.BackResponse>> createPersonal(
             @RequestBody PersonalDto.Create personalRequestDto) throws Exception {
@@ -58,6 +59,7 @@ public class PersonalController {
         }
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<PersonalDto.BackResponse>> updatePersonal(@PathVariable Long id,
             @RequestBody PersonalDto.Update personalRequestDto) throws Exception {
@@ -69,6 +71,7 @@ public class PersonalController {
         }
     }
 
+    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePersonal(@PathVariable Long id) throws Exception {
         try {
@@ -83,6 +86,7 @@ public class PersonalController {
         }
     }
 
+    @PreAuthorize("hasRole('admin') or hasRole('personal_medico')")
     @GetMapping("/resumen")
     public ResponseEntity<ApiResponse<PaginacionDto.Response<PersonalDto.FrontResponseLite>>> getPersonalLite(
             @RequestParam(name = "page") Integer page,

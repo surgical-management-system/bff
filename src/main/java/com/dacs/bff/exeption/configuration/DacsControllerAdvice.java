@@ -73,6 +73,14 @@ public class DacsControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
 	}
 	
+	@ExceptionHandler(value = { IllegalArgumentException.class })
+	public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(
+				HttpStatus.BAD_REQUEST.value(),
+				this.codePrefix + "_" + HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handleException(Exception ex, WebRequest request) {
