@@ -38,9 +38,10 @@ public class PersonalController {
     public ResponseEntity<ApiResponse<PaginacionDto.Response<PersonalDto.BackResponse>>> getPersonal(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size,
-            @RequestParam(name = "param", required = false) String param) throws Exception {
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "role", required = false) String role) throws Exception {
         try {
-            PaginacionDto.Response<PersonalDto.BackResponse> backend = personalService.getPersonal(page, size, param);
+            PaginacionDto.Response<PersonalDto.BackResponse> backend = personalService.getPersonal(page, size, search, role);
             return ApiResponseBuilder.okWithPagination(backend);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener personal: " + e.getMessage());
@@ -91,9 +92,10 @@ public class PersonalController {
     public ResponseEntity<ApiResponse<PaginacionDto.Response<PersonalDto.FrontResponseLite>>> getPersonalLite(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "param", required = false) String param) {
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "role", required = false) String role) {
         try {
-            PaginacionDto.Response<PersonalDto.FrontResponseLite> results = personalService.getPersonalLite(page, size, param);
+            PaginacionDto.Response<PersonalDto.FrontResponseLite> results = personalService.getPersonalLite(page, size, search, role);
             return ApiResponseBuilder.okWithPagination(results);
         } catch (Exception e) {
             return ApiResponseBuilder.serverError("Error al obtener personal lite: " + e.getMessage());

@@ -71,7 +71,26 @@ public class ApiBackendUrgenciaServiceImpl implements ApiBackendUrgenciaService 
         ResponseEntity<List<MiembroEquipoDTO.BackResponse>> response = apiBackendUrgenciasClient.getEquipoMedico(id);
         return ResponseEntity.status(response.getStatusCode())
                 .body(response.getBody().stream()
-                        .map(back -> modelMapper.map(back, MiembroEquipoDTO.Response.class))
+                        .map(back -> {
+                            MiembroEquipoDTO.Response front = new MiembroEquipoDTO.Response();
+                            if (back.getPersonal() != null) {
+                                front.setPersonalId(back.getPersonal().getId());
+                                front.setLegajo(back.getPersonal().getLegajo());
+                                String nombre = back.getPersonal().getNombre();
+                                String apellido = back.getPersonal().getApellido();
+                                if (nombre != null && apellido != null) {
+                                    front.setNombre(nombre + " " + apellido);
+                                } else if (nombre != null) {
+                                    front.setNombre(nombre);
+                                } else {
+                                    front.setNombre(apellido);
+                                }
+                            }
+                            front.setCirugiaId(back.getCirugiaId());
+                            front.setUrgenciaId(back.getUrgenciaId());
+                            front.setRol(back.getRol());
+                            return front;
+                        })
                         .toList());
     }
 
@@ -82,7 +101,26 @@ public class ApiBackendUrgenciaServiceImpl implements ApiBackendUrgenciaService 
                 miembros);
         return ResponseEntity.status(response.getStatusCode())
                 .body(response.getBody().stream()
-                        .map(back -> modelMapper.map(back, MiembroEquipoDTO.Response.class))
+                        .map(back -> {
+                            MiembroEquipoDTO.Response front = new MiembroEquipoDTO.Response();
+                            if (back.getPersonal() != null) {
+                                front.setPersonalId(back.getPersonal().getId());
+                                front.setLegajo(back.getPersonal().getLegajo());
+                                String nombre = back.getPersonal().getNombre();
+                                String apellido = back.getPersonal().getApellido();
+                                if (nombre != null && apellido != null) {
+                                    front.setNombre(nombre + " " + apellido);
+                                } else if (nombre != null) {
+                                    front.setNombre(nombre);
+                                } else {
+                                    front.setNombre(apellido);
+                                }
+                            }
+                            front.setCirugiaId(back.getCirugiaId());
+                            front.setUrgenciaId(back.getUrgenciaId());
+                            front.setRol(back.getRol());
+                            return front;
+                        })
                         .toList());
     }
 

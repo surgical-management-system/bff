@@ -20,8 +20,11 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
     private ApiBackendPersonalClient apiBackendPersonalClient;
 
     @Override
-    public PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param) throws Exception {
-        return apiBackendPersonalClient.getPersonal(page, size, param);
+    public PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param, String role) throws Exception {
+        if (role == null || role.isBlank()) {
+            return apiBackendPersonalClient.getPersonal(page, size, param);
+        }
+        return apiBackendPersonalClient.getPersonal(page, size, param, role);
     }
 
     @Override
@@ -55,8 +58,13 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
     }
 
     @Override
-    public PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param) {
-        PaginacionDto.Response<PersonalDto.BackResponse> backResp = apiBackendPersonalClient.getPersonal(page, size, param);
+    public PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param, String role) {
+        PaginacionDto.Response<PersonalDto.BackResponse> backResp;
+        if (role == null || role.isBlank()) {
+            backResp = apiBackendPersonalClient.getPersonal(page, size, param);
+        } else {
+            backResp = apiBackendPersonalClient.getPersonal(page, size, param, role);
+        }
         List<PersonalDto.FrontResponseLite> mappedContent = backResp.getContenido().stream()
             .map(back -> {
                 PersonalDto.FrontResponseLite front = new PersonalDto.FrontResponseLite();

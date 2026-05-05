@@ -8,7 +8,7 @@ import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PersonalDto;
 
 public interface ApiBackendPersonalService {     //Cambiar todos a frontresponse
-    PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param) throws Exception;
+    PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param, String role) throws Exception;
 
     ResponseEntity<PersonalDto.BackResponse> create(PersonalDto.Create personalRequestDto);
 
@@ -16,5 +16,5 @@ public interface ApiBackendPersonalService {     //Cambiar todos a frontresponse
 
     ResponseEntity<Void> delete(Long id) throws Exception;
 
-    PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param);
+    PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param, String role);
 }

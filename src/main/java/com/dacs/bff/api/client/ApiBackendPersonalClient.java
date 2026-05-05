@@ -37,13 +37,13 @@ public interface ApiBackendPersonalClient {
     PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size,
-            @RequestParam(name = "param", required = false) String param);
+            @RequestParam(name = "search", required = false) String search);
 
     @GetMapping("/personal")
     PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size,
-            @RequestParam(name = "param", required = false) String param,
+            @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "role", required = false) String role);
 
 }
