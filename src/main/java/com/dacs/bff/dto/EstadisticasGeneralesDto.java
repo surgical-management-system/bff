@@ -11,6 +11,8 @@ public class EstadisticasGeneralesDto {
     private Long cirugiasPendientes;
     private Long cirugiasHoy;
     private Long cirugiasEstaSemana;
+    private Long urgenciasHoy;
+    private Long urgenciasEstaSemana;
     private List<QuirofanoDTO> quirofanosDisponibles;
     private List<QuirofanoDTO> quirofanosEnUso;
 

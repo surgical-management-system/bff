@@ -15,6 +15,5 @@ public interface ApiBackendDashboardClient {
 
     @GetMapping("/dashboard/general")
     ResponseEntity<EstadisticasGeneralesDto> getEstadisticasGenerales();
-    
 
 }
