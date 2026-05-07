@@ -3,28 +3,68 @@ package com.dacs.bff.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dacs.bff.api.client.ApiBackendPersonalClient;
 import com.dacs.bff.dto.PaginacionDto;
 import com.dacs.bff.dto.PersonalDto;
 import com.dacs.bff.enums.PersonalRole;
-import com.dacs.bff.util.ApiResponseBuilder;
-import com.dacs.bff.dto.ApiResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService {
 
     @Autowired
     private ApiBackendPersonalClient apiBackendPersonalClient;
 
+    @Value("${feign.client.config.apiBackendPersonalClient.url}")
+    private String apiBackendPersonalBaseUrl;
+
+    private String personalBaseUrl() {
+        return apiBackendPersonalBaseUrl.endsWith("/")
+            ? apiBackendPersonalBaseUrl.substring(0, apiBackendPersonalBaseUrl.length() - 1)
+            : apiBackendPersonalBaseUrl;
+    }
+
+    private String personalUrl(String path, Integer page, Integer size, String search, String role) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(personalBaseUrl())
+            .path(path);
+
+        if (page != null) {
+            builder.queryParam("page", page);
+        }
+        if (size != null) {
+            builder.queryParam("size", size);
+        }
+        if (search != null && !search.isBlank()) {
+            builder.queryParam("search", search);
+        }
+        if (role != null && !role.isBlank()) {
+            builder.queryParam("role", role);
+        }
+
+        return builder.toUriString();
+    }
+
     @Override
     public PaginacionDto.Response<PersonalDto.BackResponse> getPersonal(Integer page, Integer size, String param, String role) throws Exception {
-        if (role == null || role.isBlank()) {
-            return apiBackendPersonalClient.getPersonal(page, size, param);
+        String targetUrl = personalUrl("/personal", page, size, param, role);
+        log.debug("Calling backend at: {}", targetUrl);
+
+        try {
+            if (role == null || role.isBlank()) {
+                return apiBackendPersonalClient.getPersonal(page, size, param);
+            }
+            return apiBackendPersonalClient.getPersonal(page, size, param, role);
+        } catch (Exception ex) {
+            log.error("Error calling backend at: {}", targetUrl, ex);
+            throw ex;
         }
-        return apiBackendPersonalClient.getPersonal(page, size, param, role);
     }
 
     @Override
@@ -36,7 +76,16 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
                 String.join(", ", PersonalRole.ADMIN.getValue(), PersonalRole.PERSONAL_MEDICO.getValue())
             );
         }
-        return apiBackendPersonalClient.create(personalRequestDto);
+
+        String targetUrl = personalUrl("/personal", null, null, null, null);
+        log.debug("Calling backend at: {}", targetUrl);
+
+        try {
+            return apiBackendPersonalClient.create(personalRequestDto);
+        } catch (Exception ex) {
+            log.error("Error calling backend at: {}", targetUrl, ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -48,22 +97,47 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
                 String.join(", ", PersonalRole.ADMIN.getValue(), PersonalRole.PERSONAL_MEDICO.getValue())
             );
         }
-        return apiBackendPersonalClient.update(id, personalRequestDto);
+
+        String targetUrl = personalUrl("/personal/" + id, null, null, null, null);
+        log.debug("Calling backend at: {}", targetUrl);
+
+        try {
+            return apiBackendPersonalClient.update(id, personalRequestDto);
+        } catch (Exception ex) {
+            log.error("Error calling backend at: {}", targetUrl, ex);
+            throw ex;
+        }
     }
 
     @Override
     public ResponseEntity<Void> delete(Long id) throws Exception {
-        return apiBackendPersonalClient.delete(id);
+        String targetUrl = personalUrl("/personal/" + id, null, null, null, null);
+        log.debug("Calling backend at: {}", targetUrl);
+
+        try {
+            return apiBackendPersonalClient.delete(id);
+        } catch (Exception ex) {
+            log.error("Error calling backend at: {}", targetUrl, ex);
+            throw ex;
+        }
 
     }
 
     @Override
     public PaginacionDto.Response<PersonalDto.FrontResponseLite> getPersonalLite(Integer page, Integer size, String param, String role) {
         PaginacionDto.Response<PersonalDto.BackResponse> backResp;
-        if (role == null || role.isBlank()) {
-            backResp = apiBackendPersonalClient.getPersonal(page, size, param);
-        } else {
-            backResp = apiBackendPersonalClient.getPersonal(page, size, param, role);
+        String targetUrl = personalUrl("/personal", page, size, param, role);
+        log.debug("Calling backend at: {}", targetUrl);
+
+        try {
+            if (role == null || role.isBlank()) {
+                backResp = apiBackendPersonalClient.getPersonal(page, size, param);
+            } else {
+                backResp = apiBackendPersonalClient.getPersonal(page, size, param, role);
+            }
+        } catch (Exception ex) {
+            log.error("Error calling backend at: {}", targetUrl, ex);
+            throw ex;
         }
         List<PersonalDto.FrontResponseLite> mappedContent = backResp.getContenido().stream()
             .map(back -> {
