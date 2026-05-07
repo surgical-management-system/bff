@@ -139,7 +139,14 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
             log.error("Error calling backend at: {}", targetUrl, ex);
             throw ex;
         }
-        List<PersonalDto.FrontResponseLite> mappedContent = backResp.getContenido().stream()
+        List<PersonalDto.BackResponse> backendContent = backResp.getContenido() != null ? backResp.getContenido() : java.util.Collections.emptyList();
+
+        // Filter only personnel with estado == "alta" (case-insensitive) because resumen is used for selection
+        List<PersonalDto.BackResponse> activeOnly = backendContent.stream()
+            .filter(b -> b.getEstado() != null && b.getEstado().equalsIgnoreCase("alta"))
+            .toList();
+
+        List<PersonalDto.FrontResponseLite> mappedContent = activeOnly.stream()
             .map(back -> {
                 PersonalDto.FrontResponseLite front = new PersonalDto.FrontResponseLite();
                 front.setId(back.getId());
@@ -156,6 +163,16 @@ public class ApiBackendPersonalServiceImpl implements ApiBackendPersonalService 
                 return front;
             })
             .toList();
-        return com.dacs.bff.util.PaginatedResponseUtil.build(backResp, mappedContent);
+
+        // Rebuild pagination response based on filtered content
+        com.dacs.bff.dto.PaginacionDto.Response<PersonalDto.FrontResponseLite> response = new com.dacs.bff.dto.PaginacionDto.Response<>();
+        response.setContenido(mappedContent);
+        int totalElements = activeOnly.size();
+        response.setTotalElementos(totalElements);
+        int totalPages = size != null && size > 0 ? (int) Math.ceil((double) totalElements / size) : 0;
+        response.setTotalPaginas(totalPages);
+        response.setPagina(page != null ? page : 0);
+        response.setTamaño(size != null ? size : 0);
+        return response;
     }
 }

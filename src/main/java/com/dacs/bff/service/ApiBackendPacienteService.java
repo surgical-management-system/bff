@@ -18,6 +18,8 @@ public interface ApiBackendPacienteService {
 
     public ResponseEntity<Void> deletePaciente(Long id) throws Exception;
 
+    public ResponseEntity<Void> activatePaciente(Long id) throws Exception;
+
     public ResponseEntity<List<PacienteDto.FrontResponse>> getPacientesHospital(Integer cantidad);
 
     public PaginacionDto.Response<PacienteDto.FrontResponse> getPacientesByPage(int page, int size, String search);

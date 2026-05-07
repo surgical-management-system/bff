@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -83,13 +84,23 @@ public class PacienteController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") Long id) throws Exception {
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable("id") Long id) throws Exception {
         try {
             pacienteService.deletePaciente(id);
-            return ApiResponseBuilder.ok(null, "Paciente eliminado exitosamente");
+            return ApiResponseBuilder.ok(null, "Paciente dado de baja exitosamente");
         } catch (Exception e) {
-            return ApiResponseBuilder.serverError("Error al eliminar el paciente: " + e.getMessage());
+            return ApiResponseBuilder.serverError("Error al dar de baja el paciente: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/activate")
+    public ResponseEntity<ApiResponse<Void>> activate(@PathVariable("id") Long id) throws Exception {
+        try {
+            pacienteService.activatePaciente(id);
+            return ApiResponseBuilder.ok(null, "Paciente reactivado exitosamente");
+        } catch (Exception e) {
+            return ApiResponseBuilder.serverError("Error al reactivar el paciente: " + e.getMessage());
         }
     }
 }

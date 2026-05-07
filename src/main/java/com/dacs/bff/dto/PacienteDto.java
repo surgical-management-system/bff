@@ -21,6 +21,7 @@ public class PacienteDto {
         private String telefono;
         private Double altura;
         private Double peso;
+        private Boolean active;
     }
 
     @Data
@@ -35,6 +36,7 @@ public class PacienteDto {
         private String telefono;
         private Double altura;
         private Double peso;
+        private Boolean active;
     }
 
     @Data

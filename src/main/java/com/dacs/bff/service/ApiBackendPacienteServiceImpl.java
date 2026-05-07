@@ -41,7 +41,12 @@ public class ApiBackendPacienteServiceImpl implements ApiBackendPacienteService 
 
     @Override
     public ResponseEntity<Void> deletePaciente(Long id) throws Exception {
-        return apiBackendPacienteClient.delete(id);
+        return apiBackendPacienteClient.deactivate(id);
+    }
+
+    @Override
+    public ResponseEntity<Void> activatePaciente(Long id) throws Exception {
+        return apiBackendPacienteClient.activate(id);
     }
 
 
@@ -70,9 +75,25 @@ public class ApiBackendPacienteServiceImpl implements ApiBackendPacienteService 
     public PaginacionDto.Response<PacienteDto.FrontResponseLite> getPacientesLite(int page, int size, String search) {
         PaginacionDto.Response<PacienteDto.FrontResponse> paginatedData = getPacientesByPage(page, size, search);
         List<PacienteDto.FrontResponse> content = paginatedData.getContenido() != null ? paginatedData.getContenido() : java.util.Collections.emptyList();
-        List<PacienteDto.FrontResponseLite> mappedContent = content.stream()
+
+        // For the "lite" endpoint we only want patients that are active (for selection)
+        List<PacienteDto.FrontResponse> activeOnly = content.stream()
+            .filter(p -> p.getActive() == null ? true : p.getActive())
+            .toList();
+
+        List<PacienteDto.FrontResponseLite> mappedContent = activeOnly.stream()
             .map(p -> modelMapper.map(p, PacienteDto.FrontResponseLite.class))
             .toList();
-        return com.dacs.bff.util.PaginatedResponseUtil.build(paginatedData, mappedContent);
+
+        // Rebuild pagination response based on filtered content
+        PaginacionDto.Response<PacienteDto.FrontResponseLite> response = new PaginacionDto.Response<>();
+        response.setContenido(mappedContent);
+        int totalElements = activeOnly.size();
+        response.setTotalElementos(totalElements);
+        int totalPages = size > 0 ? (int) Math.ceil((double) totalElements / size) : 0;
+        response.setTotalPaginas(totalPages);
+        response.setPagina(page);
+        response.setTamaño(size);
+        return response;
     }
 }

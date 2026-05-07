@@ -29,8 +29,11 @@ public interface ApiBackendPacientesClient {
     @PutMapping("/pacientes")
     PacienteDto.BackResponse update(@RequestBody PacienteDto.BackResponse paciente);
 
-    @DeleteMapping("/pacientes/{id}")
-    ResponseEntity<Void> delete(@PathVariable("id") Long id);
+    @PutMapping("/pacientes/{id}/deactivate")
+    ResponseEntity<Void> deactivate(@PathVariable("id") Long id);
+
+    @PutMapping("/pacientes/{id}/activate")
+    ResponseEntity<Void> activate(@PathVariable("id") Long id);
 
     @GetMapping("/pacientes")
     PaginacionDto.Response<PacienteDto.BackResponse> getPacientes(
