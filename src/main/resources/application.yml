@@ -29,9 +29,9 @@ feign:
       apiBackendTurnosClient:
         url: '${MS_BACKEND_URL:http://localhost:9003/backend}'
       apiBackEndTipoIntervencionesClient:
-        url: '${MS_BACKEND_URL:http://localhost:9003/backend/api}'
+        url: '${MS_BACKEND_URL:http://localhost:9003/backend}'
       apiBackendDashboardClient:
-        url: '${MS_BACKEND_URL:http://localhost:9003/backend/api}'
+        url: '${MS_BACKEND_URL:http://localhost:9003/backend}'
 
 management:
   endpoints:
